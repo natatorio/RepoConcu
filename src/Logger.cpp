@@ -36,7 +36,7 @@ void Logger::free_lock() {
 }
 
 char* Logger::format_logline(std::string& text) {
-
+  return text.c_str();
 }
 
 void Logger::write(std::string& text) {
