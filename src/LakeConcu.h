@@ -27,9 +27,9 @@ class LakeConcu{
     int finedPassengers;
     Pipe* pipe;
 
-    void createShips(int, int);
-    void createInspector();
-    void createCustom();
+    void runShips(int, int);
+    void runInspector();
+    void runCustom();
     int getConfiscatedShips();
     int getFinedPassengers();
 };

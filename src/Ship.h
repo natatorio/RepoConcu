@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include "SignalHandler.h"
 
 using namespace std;
 
@@ -13,4 +14,7 @@ class Ship{
 
   private:
     int finedPassengers;
+
+    void blockSignals();
+    void unblockSignals();
 };

@@ -12,6 +12,24 @@ Ship::Ship(){
 
 }
 
+void Ship::blockSignals(){
+  sigset_t sa;
+  sigemptyset ( &sa );
+  sigaddset ( &sa,SIGRTMIN+13 );
+  sigaddset ( &sa,SIGRTMIN+14 );
+  sigaddset ( &sa,SIGRTMIN+15 );
+  sigprocmask ( SIG_BLOCK,&sa,NULL );
+}
+
+void Ship::unblockSignals(){
+  sigset_t sa;
+  sigemptyset ( &sa );
+  sigaddset ( &sa,SIGRTMIN+13 );
+  sigaddset ( &sa,SIGRTMIN+14 );
+  sigaddset ( &sa,SIGRTMIN+15 );
+  sigprocmask ( SIG_UNBLOCK,&sa,NULL );
+}
+
 Ship::~Ship(){
   close(1);
 }

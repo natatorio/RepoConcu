@@ -15,12 +15,12 @@ int main (int argc, char* argv[]){
 LakeConcu::LakeConcu(int nShips, int nCities){
   confiscatedShips = 0;
   finedPassengers = 0;
-  createShips(nShips, nCities);
-  createCustom();
-  createInspector();
+  runShips(nShips, nCities);
+  runCustom();
+  runInspector();
 }
 
-void LakeConcu::createShips(int nShips, int nCities){
+void LakeConcu::runShips(int nShips, int nCities){
   pidShips = new char*[nShips+1];
   pid_t pid;
   pipe = new Pipe();
@@ -40,13 +40,13 @@ void LakeConcu::createShips(int nShips, int nCities){
   pipe->setearModo(pipe->LECTURA);
 }
 
-void LakeConcu::createCustom(){
+void LakeConcu::runCustom(){
   if(!fork()){
     execv("custom", pidShips);
   }
 }
 
-void LakeConcu::createInspector(){
+void LakeConcu::runInspector(){
   if(!fork()){
     execv("inspector", pidShips);
   }
