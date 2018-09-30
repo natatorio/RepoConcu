@@ -6,19 +6,29 @@ int main (int argc, char* argv[]){
     return 0;
   }
   LakeConcu* lakeConcu = new LakeConcu(atoi(argv[1]), atoi(argv[2]));
-  lakeConcu->getFinedPassengers();
-  //delete lakeConcu;
+  lakeConcu->listenShips();
+  for(int i=0; i!=atoi(argv[1])+2;i++) wait(NULL);
+  delete lakeConcu;
   return 0;
 }
 
 LakeConcu::LakeConcu(int nShips, int nCities){
   confiscatedShips = 0;
   finedPassengers = 0;
+  createShips(nShips, nCities);
+  createCustom();
+  createInspector();
+}
+
+void LakeConcu::createShips(int nShips, int nCities){
   pidShips = new char*[nShips+1];
   pid_t pid;
+  pipe = new Pipe();
   for(int i=0; i!=nShips; i++){
     pid = fork();
     if(!pid){
+      pipe->setearModo(pipe->ESCRITURA);
+      dup2(pipe->getFdEscritura(), 1);
       char *argv[] = {NULL};
       execv("ship", argv);
     }
@@ -27,23 +37,39 @@ LakeConcu::LakeConcu(int nShips, int nCities){
     strcpy(pidShips[i], s.c_str());
   }
   pidShips[nShips] = NULL;
-  pid = fork();
-  if(!pid){
-    execv("inspector", pidShips);
-  }
-  pid = fork();
-  if(!pid){
+  pipe->setearModo(pipe->LECTURA);
+}
+
+void LakeConcu::createCustom(){
+  if(!fork()){
     execv("custom", pidShips);
   }
-  for(int i=0; i!=nShips+2;i++) wait(NULL);
-
 }
+
+void LakeConcu::createInspector(){
+  if(!fork()){
+    execv("inspector", pidShips);
+  }
+}
+
+void LakeConcu::listenShips(){
+  char msg;
+  while(pipe->leer(&msg, sizeof(char))){
+    if(msg == FINED) finedPassengers++;
+    if(msg == CONFISCATED) confiscatedShips++;
+  }
+  cout << getFinedPassengers() << endl;
+}
+
 int LakeConcu::getConfiscatedShips(){
   return confiscatedShips;
 }
+
 int LakeConcu::getFinedPassengers(){
   return finedPassengers;
 }
+
 LakeConcu::~LakeConcu(){
   delete[] pidShips;
+  pipe->cerrar();
 }
