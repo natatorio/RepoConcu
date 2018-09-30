@@ -1,7 +1,8 @@
 #include "LakeConcu.h"
 
 int main (int argc, char* argv[]){
-  new LakeConcu(atoi(argv[1]), atoi(argv[2]));
+  LakeConcu* lakeConcu = new LakeConcu(atoi(argv[1]), atoi(argv[2]));
+  delete lakeConcu;
   return 0;
 }
 

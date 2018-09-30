@@ -10,30 +10,30 @@ execInspector = inspector
 execCustom = custom
 
 
-
+.PHONY: all *.o
 
 LakeConcu.o: LakeConcu.cpp LakeConcu.h
 
 Custom.o:	Custom.cpp Custom.h
 
-Inspector.o:	Inspector.cpp Inspector.h
+Inspector.o: Inspector.cpp Inspector.h
 
 Ship.o:	Ship.cpp Ship.h
 
-buildLakeConcu: $(LAKECONCU)
-	$(CPP) $(CPPFLAGS) $(LAKECONCU) -o $(execLakeConcu)
+buildLakeConcu:
+	$(CPP) $(CPPFLAGS) -o $(execLakeConcu) $(LAKECONCU)
 
-buildShip: $(SHIP)
-	$(CPP) $(CPPFLAGS) $(SHIP) -o $(execShip)
+buildShip:
+	$(CPP) $(CPPFLAGS) -o $(execShip) $(SHIP)
 
-buildCustom: $(CUSTOM)
-	$(CPP) $(CPPFLAGS) $(CUSTOM) -o $(execCustom)
+buildCustom:
+	$(CPP) $(CPPFLAGS) -o $(execCustom) $(CUSTOM)
 
-buildInspector: $(INSPECTOR)
-	$(CPP) $(CPPFLAGS) $(INSPECTOR) -o $(execInspector)
+buildInspector:
+	$(CPP) $(CPPFLAGS) -o $(execInspector) $(INSPECTOR)
 
 all:
 	buildLakeConcu buildShip buildCustom buildInspector
 
 clean:
-	rm -f *.o $(lakeConcu)
+	rm -f *.o $(execLakeConcu) $(execShip) $(execInspector) $(execCustom)

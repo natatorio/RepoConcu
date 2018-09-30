@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <stdlib.h>
+#include <iostream>
 #include <unistd.h>
 
 class LakeConcu{
