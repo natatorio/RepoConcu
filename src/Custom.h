@@ -4,15 +4,18 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <sys/types.h>
+#include <signal.h>
 
 using namespace std;
 
 class Custom{
   public:
-    Custom();
-    void addShip(char*);
+    Custom(char**);
 
+    pid_t getRandomShip();
   private:
     vector<pid_t> ships;
-    pid_t getRandomShip();
+
+    void addShip(char*);
 };

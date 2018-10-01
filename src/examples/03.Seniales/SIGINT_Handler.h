@@ -6,7 +6,7 @@
 
 #include "EventHandler.h"
 
-class SIGINT_Handler : public EventHandler {
+class SIGINT_Handler : public EventHandler{
 
 	private:
 		sig_atomic_t gracefulQuit;

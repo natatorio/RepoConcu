@@ -1,6 +1,8 @@
+#ifndef SHIP_H_
+#define SHIP_H_
+
 #include <iostream>
 #include <unistd.h>
-#include "SignalHandler.h"
 
 using namespace std;
 
@@ -9,12 +11,16 @@ class Ship{
     static const char FINED = 'F';
     static const char CONFISCATED = 'C';
 
+    void inspectTickets();
+    void inspectShip();
+    void downloadTourist();
     Ship();
     ~Ship();
 
   private:
     int finedPassengers;
 
-    void blockSignals();
-    void unblockSignals();
 };
+
+
+#endif /* SHIP_H_ */

@@ -59,6 +59,7 @@ void LakeConcu::listenShips(){
     if(msg == CONFISCATED) confiscatedShips++;
   }
   cout << getFinedPassengers() << endl;
+  cout << getConfiscatedShips() << endl;
 }
 
 int LakeConcu::getConfiscatedShips(){

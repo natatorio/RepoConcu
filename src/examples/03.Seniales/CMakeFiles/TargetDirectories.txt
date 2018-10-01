@@ -1,0 +1,3 @@
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/CMakeFiles/edit_cache.dir
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/CMakeFiles/rebuild_cache.dir
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/CMakeFiles/ejemplo1.dir
