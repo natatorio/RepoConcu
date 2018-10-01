@@ -17,7 +17,7 @@ public:
 
 private:
   void write(std::string& text, int state);
-  const char* format_logline(std::string& text);
+  std::string format_logline(std::string& text);
   void set_lock();
   void free_lock();
 
