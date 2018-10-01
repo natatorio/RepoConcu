@@ -22,5 +22,4 @@ class Ship{
 
 };
 
-
 #endif /* SHIP_H_ */

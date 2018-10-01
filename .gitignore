@@ -32,3 +32,11 @@
 *.app
 
 # Others
+src/custom
+src/inspector
+src/lakeConcu
+src/ship
+src/tests/LoggerTest
+src/tests/testlog
+src/tests/testlogFork
+

@@ -1,4 +1,7 @@
 #include "LakeConcu.h"
+#include "Logger.h"
+
+Logger logger("test");
 
 int main (int argc, char* argv[]){
   if(argc != 3){
