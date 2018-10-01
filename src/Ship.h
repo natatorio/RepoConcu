@@ -1,6 +1,8 @@
+#ifndef SHIP_H_
+#define SHIP_H_
+
 #include <iostream>
 #include <unistd.h>
-#include "SignalHandler.h"
 
 using namespace std;
 
@@ -18,3 +20,5 @@ class Ship{
     void blockSignals();
     void unblockSignals();
 };
+
+#endif

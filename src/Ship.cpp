@@ -1,4 +1,6 @@
 #include "Ship.h"
+#include "SignalHandler.h"
+
 
 int main(){
   Ship* ship = new Ship();
