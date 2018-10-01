@@ -13,20 +13,17 @@ class CustomHandler : public EventHandler {
 
 	public:
 
-		SIGINT_Handler () {
+		CustomHandler () {
 		}
 
-		~SIGINT_Handler () {
+		~CustomHandler () {
 		}
 
 		virtual int handleSignal ( int signum ) {
-			assert ( signum == SIGINT );
-			this->gracefulQuit = 1;
+			assert ( signum == SIGRTMIN+13 );
+			std::cout << "aoin" << std::endl;
+			ship->inspectShip();
 			return 0;
-		}
-
-		sig_atomic_t getGracefulQuit () const {
-			return this->gracefulQuit;
 		}
 
 };

@@ -1,14 +1,16 @@
 #include "Custom.h"
 
 int main(int argc, char *argv[]){
-  Custom* custom = new Custom();
-  for(int i=0; argv[i]; i++)  custom->addShip(argv[i]);
+  Custom* custom = new Custom(argv);
+  sleep(1);
+  for(int i = 0; i!=10000; i++) kill(custom->getRandomShip(), SIGRTMIN+13);
   delete custom;
   exit(0);
   return 0;
 }
 
-Custom::Custom(){
+Custom::Custom(char *argv[]){
+  for(int i=0; argv[i]; i++)  addShip(argv[i]);
   srand(time(NULL) && (int)getpid());
 }
 void Custom::addShip(char *ship){

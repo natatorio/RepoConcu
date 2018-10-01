@@ -1,0 +1,1 @@
+/usr/bin/c++    -Wall   CMakeFiles/ejemplo1.dir/main.cc.o CMakeFiles/ejemplo1.dir/SignalHandler.cpp.o  -o ejemplo1 -rdynamic 

@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/EventHandler.h
+
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/SIGINT_Handler.h
+signal.h
+-
+assert.h
+-
+EventHandler.h
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/EventHandler.h
+
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/SignalHandler.cpp
+SignalHandler.h
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/SignalHandler.h
+
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/SignalHandler.h
+signal.h
+-
+stdio.h
+-
+memory.h
+-
+EventHandler.h
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/EventHandler.h
+
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/main.cc
+iostream
+-
+unistd.h
+-
+SIGINT_Handler.h
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/SIGINT_Handler.h
+SignalHandler.h
+/home/pato/Desktop/RepoConcu/src/examples/03.Seniales/SignalHandler.h
+

@@ -3,7 +3,7 @@ CPPFLAGS = -std=gnu++11 -Wall
 LAKECONCU = LakeConcu.o Pipe.o SignalHandler.o
 CUSTOM = Custom.o
 INSPECTOR = Inspector.o
-SHIP = Ship.o Pipe.o SignalHandler.o
+SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o
 execLakeConcu = lakeConcu
 execShip = ship
 execInspector = inspector
@@ -25,6 +25,9 @@ Inspector.o: Inspector.cpp Inspector.h
 
 Ship.o:	Ship.cpp Ship.h
 	$(CPP) $(CPPFLAGS) -c Ship.cpp
+
+ShipContainer.o:	ShipContainer.cpp ShipContainer.h CustomHandler.h TouristHandler.h InspectionHandler.h EventHandler.h
+	$(CPP) $(CPPFLAGS) -c ShipContainer.cpp
 
 Pipe.o:	Pipe.cpp Pipe.h
 	$(CPP) $(CPPFLAGS) -c Pipe.cpp
