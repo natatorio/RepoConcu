@@ -18,10 +18,13 @@ public:
   Dock(int id);
   virtual ~Dock();
 
+  // solo deberia llamarse desde el hilo que cree pasajeros (HumanResources)
   void addPassenger(Passenger passenger);
-  int getState();
+  // esto es llamado por los hilos de los ships.
   int tryToMoorShip(Ship& ship);
+
 private:
+  int getState();
   void buyTicket(Passenger passenger);
   void writePassenger(Passenger passenger);
   void lock(int fd);

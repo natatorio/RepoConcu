@@ -1,8 +1,5 @@
 /*
- * HumanResources.h
  *
- *  Created on: Oct 3, 2018
- *      Author: harle
  */
 
 #ifndef HUMANRESOURCES_H_
