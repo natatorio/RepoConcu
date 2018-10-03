@@ -8,7 +8,8 @@ class Dock {
 private:
   int id;
   void* shmem;
-  void* shmem_currp;
+  void* shmem_total_pass;
+  void* shmem_current;
   int memid;
   int fd_passengers;
   int fd_ship;

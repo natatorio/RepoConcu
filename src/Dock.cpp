@@ -11,18 +11,19 @@
 #define FREE 0
 #define OCCUPIED 1
 #define BUY_TICKET_PROBABILITY 0.7
+#define SHMEM_SIZE 1000
 
 Logger logger("test");
 
 Dock::Dock(int id) : id(id) {
   key_t key = ftok("/bin/bash", id);
-  this->memid = shmget(key, 1000, IPC_CREAT|0777);
+  this->memid = shmget(key, SHMEM_SIZE, IPC_CREAT|0777);
   this->shmem = shmat(this->memid, NULL, 0);
   *(int*)this->shmem = FREE;
-  this->shmem_currp = this->shmem + sizeof(int);
+  this->shmem_total_pass = this->shmem + sizeof(int);
   //total passengers in queue
-  *(int*)this->shmem_currp = 0;
-  this->shmem_currp += sizeof(int);
+  *(int*)this->shmem_total_pass = 0;
+  this->shmem_current = this->shmem_total_pass + sizeof(int);
 
   char str[30];
   sprintf(str, "tmp/passengers_%d", id);
@@ -75,8 +76,9 @@ void Dock::buyTicket(Passenger passenger) {
 }
 
 void Dock::writePassenger(Passenger passenger) {
-  memcpy(this->shmem_currp, (void*)passenger, sizeof(struct Passenger));
-  this->shmem_currp +=  sizeof(struct Passenger);
+  memcpy(this->shmem_current, (void*)passenger, sizeof(struct Passenger));
+  this->shmem_current +=  sizeof(struct Passenger);
+  *(int*)this->shmem_total_pass = *(int*)this->shmem_total_pass + 1;
   std::string str("Dock : Passenger pass through turnstile.");
   logger.write(str);
 }
