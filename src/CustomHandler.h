@@ -1,9 +1,6 @@
 #ifndef CUSTOM_HANDLER_H_
 #define CUSTOM_HANDLER_H_
 
-#include <signal.h>
-#include <assert.h>
-
 #include "EventHandler.h"
 
 class CustomHandler : public EventHandler {
@@ -13,6 +10,8 @@ class CustomHandler : public EventHandler {
 
 	public:
 
+		static const int CUSTOM_SIG = 47;
+
 		CustomHandler () {
 		}
 
@@ -20,10 +19,12 @@ class CustomHandler : public EventHandler {
 		}
 
 		virtual int handleSignal ( int signum ) {
-			assert ( signum == SIGRTMIN+13 );
-			std::cout << "aoin" << std::endl;
+			assert ( signum == CUSTOM_SIG );
 			ship->inspectShip();
 			return 0;
+		}
+		virtual void addShip(Ship* ship){
+			this->ship = ship;
 		}
 
 };

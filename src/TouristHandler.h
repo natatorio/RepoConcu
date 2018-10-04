@@ -1,9 +1,6 @@
 #ifndef TOURIST_HANDLER_H_
 #define TOURIST_HANDLER_H_
 
-#include <signal.h>
-#include <assert.h>
-
 #include "EventHandler.h"
 
 class TouristHandler : public EventHandler {
@@ -13,6 +10,8 @@ class TouristHandler : public EventHandler {
 
 	public:
 
+		static const int TOURIST_SIG = 49;
+
 		TouristHandler () {
 		}
 
@@ -20,9 +19,12 @@ class TouristHandler : public EventHandler {
 		}
 
 		virtual int handleSignal ( int signum ) {
-			assert ( signum == SIGRTMIN+15 );
+			assert ( signum == TOURIST_SIG );
 			ship->downloadTourist();
 			return 0;
+		}
+		virtual void addShip(Ship* ship){
+			this->ship = ship;
 		}
 
 };

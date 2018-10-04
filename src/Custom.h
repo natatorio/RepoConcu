@@ -4,8 +4,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#include <sys/types.h>
-#include <signal.h>
+#include "CustomHandler.h"
 
 using namespace std;
 

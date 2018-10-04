@@ -1,14 +1,13 @@
 #ifndef INSPECTION_HANDLER_H_
 #define INSPECTION_HANDLER_H_
 
-#include <signal.h>
-#include <assert.h>
-
 #include "EventHandler.h"
 
 class InspectionHandler : public EventHandler {
 
 	public:
+
+		static const int INSPECTION_SIG = 48;
 
 		InspectionHandler () {
 		}
@@ -17,9 +16,12 @@ class InspectionHandler : public EventHandler {
 		}
 
 		virtual int handleSignal ( int signum ) {
-			assert ( signum == SIGRTMIN+14 );
+			assert ( signum == INSPECTION_SIG );
 			ship->inspectTickets();
 			return 0;
+		}
+		virtual void addShip(Ship* ship){
+			this->ship = ship;
 		}
 
 };

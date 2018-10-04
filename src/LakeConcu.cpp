@@ -1,17 +1,5 @@
 #include "LakeConcu.h"
 
-int main (int argc, char* argv[]){
-  if(argc != 3){
-    cout << "Usage: ./lakeConcu {N Ships} {M Cities}" << endl;
-    return 0;
-  }
-  LakeConcu* lakeConcu = new LakeConcu(atoi(argv[1]), atoi(argv[2]));
-  lakeConcu->listenShips();
-  for(int i=0; i!=atoi(argv[1])+2;i++) wait(NULL);
-  delete lakeConcu;
-  return 0;
-}
-
 LakeConcu::LakeConcu(int nShips, int nCities){
   confiscatedShips = 0;
   finedPassengers = 0;
@@ -68,6 +56,11 @@ int LakeConcu::getConfiscatedShips(){
 
 int LakeConcu::getFinedPassengers(){
   return finedPassengers;
+}
+
+void LakeConcu::printFinedAndConfiscated(){
+  cout << "La cantidad de pasajeros multados es: " << getFinedPassengers() << endl;
+  cout << "La cantidad de barcos decomisados es: " << getConfiscatedShips() << endl;
 }
 
 LakeConcu::~LakeConcu(){

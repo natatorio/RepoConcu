@@ -3,13 +3,13 @@
 
 #include "Ship.h"
 
+#include <signal.h>
+#include <assert.h>
+
 class EventHandler {
 
 public:
 	virtual int handleSignal ( int signum ) = 0;
-	virtual void addShip(Ship* ship){
-		this->ship = ship;
-	}
 	virtual ~EventHandler () {};
 
 protected:

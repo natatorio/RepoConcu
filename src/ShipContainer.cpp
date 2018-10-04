@@ -11,34 +11,30 @@ int main(){
 ShipContainer::ShipContainer(){
   ship = new Ship();
   blockSignals();
-  CustomHandler customHandler;
   customHandler.addShip(ship);
-  SignalHandler :: getInstance()->registrarHandler ( SIGRTMIN+13,&customHandler );
-  InspectionHandler inspectionHandler;
+  SignalHandler :: getInstance()->registrarHandler (customHandler.CUSTOM_SIG, &customHandler);
   inspectionHandler.addShip(ship);
-  SignalHandler :: getInstance()->registrarHandler ( SIGRTMIN+14,&inspectionHandler );
-  TouristHandler touristHandler;
+  SignalHandler :: getInstance()->registrarHandler (inspectionHandler.INSPECTION_SIG, &inspectionHandler);
   touristHandler.addShip(ship);
-  SignalHandler :: getInstance()->registrarHandler ( SIGRTMIN+15,&touristHandler );
+  SignalHandler :: getInstance()->registrarHandler (touristHandler.TOURIST_SIG, &touristHandler);
   unblockSignals();
-
 }
 
 void ShipContainer::blockSignals(){
   sigset_t sa;
   sigemptyset ( &sa );
-  sigaddset ( &sa,SIGRTMIN+13 );
-  sigaddset ( &sa,SIGRTMIN+14 );
-  sigaddset ( &sa,SIGRTMIN+15 );
+  sigaddset ( &sa,customHandler.CUSTOM_SIG );
+  sigaddset ( &sa,inspectionHandler.INSPECTION_SIG );
+  sigaddset ( &sa,touristHandler.TOURIST_SIG );
   sigprocmask ( SIG_BLOCK,&sa,NULL );
 }
 
 void ShipContainer::unblockSignals(){
   sigset_t sa;
   sigemptyset ( &sa );
-  sigaddset ( &sa,SIGRTMIN+13 );
-  sigaddset ( &sa,SIGRTMIN+14 );
-  sigaddset ( &sa,SIGRTMIN+15 );
+  sigaddset ( &sa,customHandler.CUSTOM_SIG );
+  sigaddset ( &sa,inspectionHandler.INSPECTION_SIG );
+  sigaddset ( &sa,touristHandler.TOURIST_SIG );
   sigprocmask ( SIG_UNBLOCK,&sa,NULL );
 }
 

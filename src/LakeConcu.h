@@ -19,6 +19,7 @@ class LakeConcu{
     ~LakeConcu();
     void startSimulation();
     void listenShips();
+    void printFinedAndConfiscated();
 
 
   private:

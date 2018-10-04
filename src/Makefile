@@ -1,6 +1,6 @@
 CPP = g++
 CPPFLAGS = -std=gnu++11 -Wall
-LAKECONCU = LakeConcu.o Pipe.o SignalHandler.o
+LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o
 CUSTOM = Custom.o
 INSPECTOR = Inspector.o
 SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o
@@ -13,6 +13,9 @@ execCustom = custom
 .PHONY: all *.o
 
 all: buildLakeConcu buildShip buildCustom buildInspector
+
+LakeConcuContainer.o: LakeConcuContainer.cpp LakeConcuContainer.h InfoHandler.h EventHandler.h
+		$(CPP) $(CPPFLAGS) -c LakeConcuContainer.cpp
 
 LakeConcu.o: LakeConcu.cpp LakeConcu.h
 	$(CPP) $(CPPFLAGS) -c LakeConcu.cpp

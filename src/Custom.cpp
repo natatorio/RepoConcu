@@ -3,7 +3,7 @@
 int main(int argc, char *argv[]){
   Custom* custom = new Custom(argv);
   sleep(1);
-  for(int i = 0; i!=10000; i++) kill(custom->getRandomShip(), SIGRTMIN+13);
+  for(int i = 0; i!=10000; i++) kill(custom->getRandomShip(), CustomHandler::CUSTOM_SIG);
   delete custom;
   exit(0);
   return 0;

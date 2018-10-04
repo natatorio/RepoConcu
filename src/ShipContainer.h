@@ -13,7 +13,9 @@ class ShipContainer{
     ~ShipContainer();
 
   private:
-
+    CustomHandler customHandler;
+    InspectionHandler inspectionHandler;
+    TouristHandler touristHandler;
 
     void blockSignals();
     void unblockSignals();
