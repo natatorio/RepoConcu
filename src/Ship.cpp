@@ -1,9 +1,9 @@
 #include "Ship.h"
 
-int main(){
-  Ship* ship = new Ship();
+int main(int argc, char* argv[]){
+  Ship* ship = new Ship(atoi(argv[0]));
   for(int i=0;i!=3;i++){
-    sleep(1);
+    sleep(3);
     ship->inspectTickets();
     ship->inspectShip();
   }
@@ -12,8 +12,8 @@ int main(){
   return 0;
 }
 
-Ship::Ship(){
-
+Ship::Ship(int shipCapacity){
+  capacity = shipCapacity;
 }
 
 void Ship::inspectShip(){

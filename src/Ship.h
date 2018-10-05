@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -14,11 +15,12 @@ class Ship{
     void inspectTickets();
     void inspectShip();
     void downloadTourist();
-    Ship();
+    Ship(int);
     ~Ship();
 
   private:
     int finedPassengers;
+    int capacity;
 
 };
 

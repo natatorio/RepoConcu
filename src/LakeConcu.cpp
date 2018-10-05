@@ -1,13 +1,13 @@
 #include "LakeConcu.h"
 
-LakeConcu::LakeConcu(int nShips, int nCities){
+LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
-  runShips(nShips, nCities);
-  runGenerator(nCities);
+  runShips(nShips, shipCapacity);
+  runGenerator();
 }
 
-void LakeConcu::runShips(int nShips, int nCities){
+void LakeConcu::runShips(int nShips, int shipCapacity){
 //  pidShips = new char*[nShips+1];
   pid_t pid;
   pipe = new Pipe();
@@ -16,7 +16,10 @@ void LakeConcu::runShips(int nShips, int nCities){
     if(!pid){
       pipe->setearModo(pipe->ESCRITURA);
       dup2(pipe->getFdEscritura(), 1);
-      char *argv[] = {NULL};
+      string str = to_string(shipCapacity);
+      char arg[str.length()+1];
+      strcpy(arg, str.c_str());
+      char *argv[] = {arg, NULL};
       execv("ship", argv);
     }
 //    string s = to_string(pid);
@@ -27,8 +30,8 @@ void LakeConcu::runShips(int nShips, int nCities){
   pipe->setearModo(pipe->LECTURA);
 }
 
-void LakeConcu::runGenerator(int nCities){
-  string str = to_string(nCities);
+void LakeConcu::runGenerator(){
+  string str = to_string(N_CITIES);
   char arg[str.length()+1];
   strcpy(arg, str.c_str());
   char* argv[] = {arg, NULL};

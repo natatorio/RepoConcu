@@ -5,7 +5,6 @@
 #include "SignalHandler.h"
 #include "SIGINT_Handler.h"
 
-#include <stdlib.h>
 #include <iostream>
 
 using namespace std;
@@ -15,10 +14,16 @@ class Generator{
 
     Generator(int);
     ~Generator();
+
     int nCities;
     SIGINT_Handler sigintHandler;
 
   private:
+    void createQueues();
+    void deleteQueues();
+
+    vector <Queues*> goQueues;
+    vector <Queues*> backQueues;
 
 };
 

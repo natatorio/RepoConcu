@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 
-unsigned int encapsulateQueueingCommand();
-unsigned int isNewPassengerCommand(unsigned int);
-unsigned int isTicketInspectionCommand(unsigned int);
-unsigned int isCustomInspectionCommand(unsigned int);
+unsigned int encapsulateQueueingOrder();
+unsigned int isNewPassengerOrder(unsigned int);
+unsigned int isTicketInspectionOrder(unsigned int);
+unsigned int isCustomInspectionOrder(unsigned int);
 unsigned int getDockId(unsigned int);
 unsigned int isGoingQueue(unsigned int);
 

@@ -1,7 +1,6 @@
 #include "Pipe.h"
 #include <vector>
 #include <string>
-#include <stdlib.h>
 #include <iostream>
 #include <unistd.h>
 #include <sys/types.h>
@@ -14,6 +13,7 @@ class LakeConcu{
   public:
     static const char FINED = 'F';
     static const char CONFISCATED = 'C';
+    static const int N_CITIES = 5;
 
     LakeConcu(int, int);
     ~LakeConcu();
@@ -30,7 +30,7 @@ class LakeConcu{
     Pipe* pipe;
 
     void runShips(int, int);
-    void runGenerator(int);
+    void runGenerator();
     int getConfiscatedShips();
     int getFinedPassengers();
 };
