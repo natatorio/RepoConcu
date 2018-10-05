@@ -17,20 +17,20 @@ class LakeConcu{
 
     LakeConcu(int, int);
     ~LakeConcu();
-    void startSimulation();
     void listenShips();
     void printFinedAndConfiscated();
+    pid_t getGeneratorPid();
 
 
   private:
-    char** pidShips;
+//    char** pidShips;
+    pid_t generatorPid;
     int confiscatedShips;
     int finedPassengers;
     Pipe* pipe;
 
     void runShips(int, int);
-    void runInspector();
-    void runCustom();
+    void runGenerator(int);
     int getConfiscatedShips();
     int getFinedPassengers();
 };

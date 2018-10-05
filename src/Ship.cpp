@@ -1,5 +1,17 @@
 #include "Ship.h"
 
+int main(){
+  Ship* ship = new Ship();
+  for(int i=0;i!=3;i++){
+    sleep(1);
+    ship->inspectTickets();
+    ship->inspectShip();
+  }
+  delete ship;
+  exit(0);
+  return 0;
+}
+
 Ship::Ship(){
 
 }
