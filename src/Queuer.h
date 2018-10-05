@@ -1,6 +1,10 @@
 #ifndef QUEUER_H_
 #define QUEUER_H_
 
+#define MAX_ARGS 6
+
+#include "Queue.h"
+
 #include <stdlib.h>
 
 unsigned int encapsulateQueueingOrder();

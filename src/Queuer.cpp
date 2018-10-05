@@ -1,9 +1,9 @@
 #include "Queuer.h"
 
+
 //argv[0] => filename to create Queue ("goQueue.cc"/"backQueue.cc")
 //argv[1] => dock id to create Queue
-/*argv[2] => integer to simulate priority when enqueueing (inc/dec value of cont when executing semaphore ops v() and p())
-          => also establishes "what" needs to be enqueued:
+/*argv[2] => establishes "what" needs to be enqueued:
                 - 1 => a random passenger
                 - 2 => a walking tourist
                 - 3 => a ticket inspection
@@ -13,7 +13,7 @@
 //argv[4] => walking tourist destiny dock id (only if argv[2] == 2)
 //argv[5] => 1 if walking tourist has ticket (only if argv[2] == 2)
 int main(int argc, char* argv[]){
-  Queue* queue = new Queue(argv[0],atoi(argv[1]));
+  Queue* queue = new Queue((const char*)argv[0],atoi(argv[1]));
   switch (atoi(argv[2])) {
     case 1:
       queue->enqueueNewPassenger();
