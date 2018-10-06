@@ -1,9 +1,6 @@
 #ifndef SIGINT_HANDLER_H_
 #define SIGINT_HANDLER_H_
 
-#include <signal.h>
-#include <assert.h>
-
 #include "EventHandler.h"
 
 class SIGINT_Handler : public EventHandler{

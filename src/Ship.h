@@ -3,8 +3,11 @@
 
 #include "Queuer.h"
 
+#include <signal.h>
 #include <iostream>
 #include <unistd.h>
+#include <list>
+#include <iterator>
 
 using namespace std;
 
@@ -13,22 +16,24 @@ class Ship{
     static const int CUSTOM_SIG = 13;
     static const int INSPECTION_SIG = 14;
     static const int TOURIST_SIG = 15;
+    static const int TRAVELING_FOWARD = 1;
+    static const int TRAVELING_BACKWARD = -1;
     static const char FINED = 'F';
     static const char CONFISCATED = 'C';
 
     Ship(int);
+    void blockSignals();
+    void unblockSignals();
     void inspectTickets();
     void inspectShip();
     void downloadTourist();
-    void visitCity();
-    void setActualCity(int);
+    void visitCity(int, int);
     ~Ship();
 
   private:
     int finedPassengers;
     int capacity;
-    int actualCity;
-
+    list<Passenger> passengers;
 };
 
 
