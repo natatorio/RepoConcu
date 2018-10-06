@@ -8,7 +8,7 @@ LakeConcu::LakeConcu(int nShips, int shipCapacity){
 }
 
 void LakeConcu::runShips(int nShips, int shipCapacity){
-//  pidShips = new char*[nShips+1];
+  pidShips = new char*[nShips+3];
   pid_t pid;
   pipe = new Pipe();
   for(int i=0; i!=nShips; i++){
@@ -22,11 +22,11 @@ void LakeConcu::runShips(int nShips, int shipCapacity){
       char *argv[] = {arg, NULL};
       execv("ship", argv);
     }
-//    string s = to_string(pid);
-//    pidShips[i] =new char[s.length()+1];
-//    strcpy(pidShips[i], s.c_str());
+    string s = to_string(pid);
+    pidShips[i+2] =new char[s.length()+1];
+    strcpy(pidShips[i+2], s.c_str());
   }
-//  pidShips[nShips] = NULL;
+  pidShips[nShips+2] = NULL;
   pipe->setearModo(pipe->LECTURA);
 }
 
@@ -38,6 +38,33 @@ void LakeConcu::runGenerator(){
   generatorPid = fork();
   if(!generatorPid){
     execv("generator", argv);
+  }
+}
+
+void LakeConcu::runCustom(){
+  string str = to_string(SIGRTMIN + 13);
+  strcpy(pidShips[0], str.c_str());
+  strcpy(pidShips[1], "3");
+  if(!fork()){
+    execv("signalSender", pidShips);
+  }
+}
+
+void LakeConcu::runInspector(){
+  string str = to_string(SIGRTMIN + 14);
+  strcpy(pidShips[0], str.c_str());
+  strcpy(pidShips[1], "2");
+  if(!fork()){
+    execv("signalSender", pidShips);
+  }
+}
+
+void LakeConcu::runTouristDownloader(){
+  string str = to_string(SIGRTMIN + 15);
+  strcpy(pidShips[0], str.c_str());
+  strcpy(pidShips[1], "1");
+  if(!fork()){
+    execv("signalSender", pidShips);
   }
 }
 

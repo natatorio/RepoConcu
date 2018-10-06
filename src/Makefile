@@ -3,13 +3,16 @@ CPPFLAGS = -std=gnu++11 -Wall
 LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o
 SHIP = Ship.o Pipe.o SignalHandler.o
 GENERATOR = Generator.o SignalHandler.o Queuer.o
+QUEUER = Queue.o
 execLakeConcu = lakeConcu
 execShip = ship
 execGenerator = generator
+execQueuer = queuer
+execSignalSender = signalSender
 
 .PHONY: all *.o
 
-all: buildLakeConcu buildShip buildGenerator
+all: buildLakeConcu buildShip buildGenerator buildQueuer buildSignalSender
 
 LakeConcuContainer.o: LakeConcuContainer.cpp LakeConcuContainer.h
 	$(CPP) $(CPPFLAGS) -c LakeConcuContainer.cpp
@@ -32,6 +35,9 @@ Pipe.o:	Pipe.cpp Pipe.h
 SignalHandler.o: SignalHandler.cpp SignalHandler.h
 	$(CPP) $(CPPFLAGS) -c SignalHandler.cpp
 
+SignalSender.o: SignalSender.cpp SignalSender.h
+	$(CPP) $(CPPFLAGS) -c SignalSender.cpp
+
 buildLakeConcu: $(LAKECONCU)
 	$(CPP) $(CPPFLAGS) $(LAKECONCU) -o $(execLakeConcu)
 
@@ -44,5 +50,8 @@ buildGenerator: $(GENERATOR)
 buildQueuer: $(QUEUER)
 	$(CPP) $(CPPFLAGS) $(QUEUER) -o $(execQueuer)
 
+buildSignalSender: $(SIGNALSENDER)
+	$(CPP) $(CPPFLAGS) $(SIGNALSENDER) -o $(execSignalSender)
+
 clean:
-	rm -f *.o $(execLakeConcu) $(execShip) $(execGenerator)
+	rm -f *.o $(execLakeConcu) $(execShip) $(execGenerator) $(execSignalSender) $(execQueuer)
