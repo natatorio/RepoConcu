@@ -7,6 +7,7 @@
 #include <string.h>
 #include <chrono>
 #include <sstream>
+
 Logger::Logger() {}
 
 Logger::~Logger() {
