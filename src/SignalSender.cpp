@@ -12,7 +12,7 @@ SignalSender::SignalSender(char *argv[]){
   signum = atoi(argv[0]);
   sleepTime = atoi(argv[1]);
   for(int i = 2; argv[i]; i++)  addShip(argv[i]);
-  srand(time(NULL) && (int)getpid());
+  srand(time(NULL) & (int)getpid());
 }
 
 void SignalSender::addShip(char *ship){

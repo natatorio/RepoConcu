@@ -30,7 +30,7 @@ class Generator{
 
     vector <Queue*> goQueues;
     vector <Queue*> backQueues;
-
+    int actualId = 0;
 };
 
 

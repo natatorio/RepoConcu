@@ -7,7 +7,7 @@
                 - a random passenger
                 - a walking tourist
 */
-//argv[3] => walking tourist id else argv[3] (only if argv[2] == 2)
+//argv[3] => id
 //argv[4] => walking tourist destiny dock id (only if argv[2] == 2)
 //argv[5] => 1 if walking tourist has ticket (only if argv[2] == 2)
 

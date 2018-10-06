@@ -48,7 +48,7 @@ void LakeConcu::runGenerator(){
 }
 
 void LakeConcu::runCustom(){
-  string str = to_string(SIGRTMIN + Ship::CUSTOM_SIG);
+  string str = to_string(SIGRTMIN + CUSTOM_SIG);
   strcpy(pidShips[0], str.c_str());
   strcpy(pidShips[1], "3");
   if(!fork()){
@@ -57,7 +57,7 @@ void LakeConcu::runCustom(){
 }
 
 void LakeConcu::runInspector(){
-  string str = to_string(SIGRTMIN + Ship::INSPECTION_SIG);
+  string str = to_string(SIGRTMIN + INSPECTION_SIG);
   strcpy(pidShips[0], str.c_str());
   strcpy(pidShips[1], "2");
   if(!fork()){
@@ -66,7 +66,7 @@ void LakeConcu::runInspector(){
 }
 
 void LakeConcu::runTouristDownloader(){
-  string str = to_string(SIGRTMIN + Ship::TOURIST_SIG);
+  string str = to_string(SIGRTMIN + TOURIST_SIG);
   strcpy(pidShips[0], str.c_str());
   strcpy(pidShips[1], "1");
   if(!fork()){

@@ -15,7 +15,7 @@ class ShipContainer{
     InspectionHandler inspectionHandler;
     TouristHandler touristHandler;
     int nCities;
-    int direction = Ship::TRAVELING_FOWARD;
+    int direction = TRAVELING_FOWARD;
 
     void ignorePendingSignals();
 };

@@ -1,7 +1,16 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
+#define TOURIST 1
+#define HAS_TICKET 1
 
+struct Passenger {
+    int id;
+    short int ticket;
+    short int origin;
+    short int destination;
+    short int tourist;
+};
 
 class Queue{
   public:
@@ -15,6 +24,7 @@ class Queue{
     void enqueueNewPassenger();
     void enqueueWalkingTourist(int, int, int);
     void flush();
+    Passenger getNextPassenger();
     ~Queue();
 
   private:
