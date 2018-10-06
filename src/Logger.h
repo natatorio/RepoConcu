@@ -13,6 +13,7 @@ public:
   ~Logger();
 
   Logger(std::string& filename);
+  Logger(const char* filename);
   void write(std::string& text);
 
 private:

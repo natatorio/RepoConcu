@@ -8,7 +8,8 @@
 #include <chrono>
 #include <sstream>
 
-Logger::Logger() {}
+Logger::Logger() {
+}
 
 Logger::~Logger() {
   fclose(this->file);
@@ -17,6 +18,11 @@ Logger::~Logger() {
 Logger::Logger(std::string& filename) {
   //this->fd = open(filename.c_str(), O_CREAT | O_RDWR | O_TRUNC);
   this->file = fopen(filename.c_str(), "w");
+  this->fd = fileno(this->file);
+}
+
+Logger::Logger(const char *filename) {
+  this->file = fopen(filename, "w");
   this->fd = fileno(this->file);
 }
 

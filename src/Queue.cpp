@@ -8,10 +8,15 @@
 #define BUY_TICKET_PROBABILITY 0.87
 
 Logger logger("test");
+const char* Queue::backQueueFilename = "backqueue";
 
-Queue::Queue(const char *filename, int id) : semaforo_prod(filename, id), semaforo_cons(filename, id) {
+Queue::Queue(const char *filename, int id) : semaforo_prod(filename, this->size), semaforo_cons(filename, 0) {
 
 }
+
+Queue::~Queue(){
+
+};
 
 void Queue::enqueueNewPassenger(int id) {
     this->semaforo_prod.p();
@@ -19,7 +24,6 @@ void Queue::enqueueNewPassenger(int id) {
     this->buyTicket(passenger);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
-    this->pos++;
 }
 
 void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket) {
@@ -33,7 +37,6 @@ void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTic
     logger.write(str);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
-    this->pos++;
 }
 
 Passenger Queue::getNextPassenger() {
@@ -66,4 +69,12 @@ void Queue::writePassenger(Passenger passenger) {
   this->pos++;
   std::string str("Dock : Passenger pass through turnstile.");
   logger.write(str);
+}
+
+Passenger Queue::readPassenger() {
+    Passenger passenger = this->buffer.leer(this->pos);
+    this->pos--;
+    std::string str("Dock : Passenger left queue turnstile.");
+    logger.write(str);
+    return passenger;
 }
