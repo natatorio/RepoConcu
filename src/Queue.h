@@ -14,8 +14,6 @@ class Queue{
     Queue(const char*, int);
     void enqueueNewPassenger();
     void enqueueWalkingTourist(int, int, int);
-    void enqueueTicketInspection();
-    void enqueueCustomInspection();
     void flush();
     ~Queue();
 
