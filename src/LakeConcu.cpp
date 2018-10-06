@@ -1,4 +1,7 @@
 #include "LakeConcu.h"
+#include "Logger.h"
+
+Logger logger("test");
 
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;

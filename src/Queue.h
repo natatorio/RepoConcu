@@ -4,6 +4,9 @@
 #define TOURIST 1
 #define HAS_TICKET 1
 
+#include "Semaforo.h"
+#include "MemoriaCompartida.h"
+
 struct Passenger {
     int id;
     short int ticket;
@@ -12,7 +15,7 @@ struct Passenger {
     short int tourist;
 };
 
-class Queue{
+class Queue {
   public:
     static char const* goQueueFilename;
     static char const* backQueueFilename;
@@ -20,15 +23,22 @@ class Queue{
     static char const* walkingTouristOrder;
     static const int size = 10;
 
-    Queue(const char*, int);
-    void enqueueNewPassenger();
-    void enqueueWalkingTourist(int, int, int);
+    Queue(const char* filename, int id);
+    void enqueueNewPassenger(int id);
+    void enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket);
+    Passenger getNextPassenger();
     void flush();
     Passenger getNextPassenger();
     ~Queue();
 
   private:
-
+    int pos = 0;
+    Semaforo semaforo_prod;
+    Semaforo semaforo_cons;
+    MemoriaCompartida<Passenger> buffer;
+    void buyTicket(Passenger passenger);
+    void writePassenger(Passenger passenger);
+    Passenger createNewPassenger(int id);
 };
 
 

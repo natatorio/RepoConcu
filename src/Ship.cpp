@@ -1,4 +1,6 @@
 #include "Ship.h"
+#include "SignalHandler.h"
+
 
 Ship::Ship(int shipCapacity){
   blockSignals();

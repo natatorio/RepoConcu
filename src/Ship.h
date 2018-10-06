@@ -46,5 +46,4 @@ class Ship{
     bool downloadPassenger(bool);
 };
 
-
 #endif /* SHIP_H_ */
