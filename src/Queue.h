@@ -1,7 +1,16 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
+#include "Semaforo.h"
+#include "MemoriaCompartida.h"
 
+struct Passenger {
+    int id;
+    short int ticket;
+    short int origin;
+    short int destination;
+    short int tourist;
+};
 
 class Queue{
   public:
@@ -18,7 +27,12 @@ class Queue{
     ~Queue();
 
   private:
-
+    int pos = 0;
+    Semaforo semaforo_prod;
+    Semaforo semaforo_cons;
+    MemoriaCompartida<Passenger> buffer;
+    void buyTicket(Passenger passenger);
+    void writePassenger(Passenger passenger);
 };
 
 

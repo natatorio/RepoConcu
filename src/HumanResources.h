@@ -5,13 +5,7 @@
 #ifndef HUMANRESOURCES_H_
 #define HUMANRESOURCES_H_
 
-struct Passenger {
-  int id;
-  short int ticket;
-  short int origin;
-  short int destination;
-  short int tourist;
-};
+
 
 class HumanResources {
 public:

@@ -26,8 +26,6 @@ Dock::Dock(int id) : id(id) {
   this->shmem_current = this->shmem_total_pass + sizeof(int);
 
   char str[30];
-  sprintf(str, "tmp/passengers_%d", id);
-  this->fd_passengers = open(str, O_CREAT | O_RDWR | O_TRUNC);
   sprintf(str, "tmp/ship_%d", id);
   this->fd_ship = open(str, O_CREAT | O_RDWR | O_TRUNC);
 }
@@ -37,22 +35,14 @@ Dock::~Dock() {
   shmctl(this->memid, IPC_RMID, NULL);
 }
 
-void Dock::addPassenger(Passenger passenger) {
-  this->lock(this->fd_passengers);
-  this->buyTicket(passenger);
-  this->writePassenger(passenger);
-  this->unlock(this->fd_passengers);
-}
-
 int Dock::tryToMoorShip(Ship& ship) {
-  //TODO: cambiar funcionamiento y usar con mutex
-  this->sync();
+  this->lock(fd_ship);
   if (this->getState() == OCCUPIED) {
     this->endsync();
     return 0;
   }
   this->moorShip(ship);
-  this->endsync();
+  this->lock(fd_ship);
   return 1;
 }
 
@@ -65,23 +55,6 @@ void Dock::moorShip(Ship& ship) {
   *(int*)this->shmem = OCCUPIED;
 }
 
-
-void Dock::buyTicket(Passenger passenger) {
-  if (passenger.ticket == 0 && rand() > BUY_TICKET_PROBABILITY) {
-    //add id of dock
-    std::string str("Dock : Passenger buy a ticket.");
-    logger.write(str);
-    passenger.ticket = 1;
-  }
-}
-
-void Dock::writePassenger(Passenger passenger) {
-  memcpy(this->shmem_current, (void*)passenger, sizeof(struct Passenger));
-  this->shmem_current +=  sizeof(struct Passenger);
-  *(int*)this->shmem_total_pass = *(int*)this->shmem_total_pass + 1;
-  std::string str("Dock : Passenger pass through turnstile.");
-  logger.write(str);
-}
 
 void Dock::lock(int fd) {
   struct flock fl;
