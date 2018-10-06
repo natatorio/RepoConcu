@@ -37,6 +37,15 @@ EventHandler* SignalHandler :: registrarHandler ( int signum,EventHandler* eh, i
 	return old_eh;
 }
 
+void SignalHandler :: ignorePending(int signum){
+	struct sigaction sa;
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	sigemptyset ( &sa.sa_mask );
+	sigaction ( signum,&sa,0 );
+}
+
 void SignalHandler :: dispatcher ( int signum ) {
 
 	if ( SignalHandler :: signal_handlers [ signum ] != 0 )

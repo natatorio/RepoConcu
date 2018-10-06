@@ -4,6 +4,7 @@ LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o
 SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o
 GENERATOR = Generator.o SignalHandler.o Queuer.o
 QUEUER = Queuer.o
+SIGNALSENDER = SignalSender.o SignalHandler.o
 execLakeConcu = lakeConcu
 execShip = ship
 execGenerator = generator
@@ -12,7 +13,7 @@ execSignalSender = signalSender
 
 .PHONY: all *.o
 
-all: buildLakeConcu buildShip buildGenerator buildQueuer buildSignalSender
+all: buildLakeConcu buildShip buildSignalSender buildGenerator buildQueuer
 
 LakeConcuContainer.o: LakeConcuContainer.cpp LakeConcuContainer.h
 	$(CPP) $(CPPFLAGS) -c LakeConcuContainer.cpp

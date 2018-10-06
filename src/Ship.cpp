@@ -18,6 +18,14 @@ void Ship::downloadTourist(){
 
 }
 
+void Ship::visitCity(){
+
+}
+
+void Ship::setActualCity(int city){
+  actualCity = city;
+}
+
 Ship::~Ship(){
     close(1);
 }

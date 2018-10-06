@@ -4,14 +4,17 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#include "CustomHandler.h"
+
+#include "SignalHandler.h"
+#include "SIGINT_Handler.h"
 
 using namespace std;
 
 class SignalSender{
   public:
     SignalSender(char**);
-    pid_t getRandomShip();
+    void startSending();
+    ~SignalSender();
 
   private:
     vector<pid_t> ships;
@@ -20,4 +23,5 @@ class SignalSender{
     SIGINT_Handler sigintHandler;
 
     void addShip(char*);
+    pid_t getRandomShip();
 };

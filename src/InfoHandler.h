@@ -10,7 +10,7 @@ class InfoHandler : public EventHandler {
 
 	public:
 
-		static const int INFO_SIG = 47;
+		static const int INFO_SIG = 13;
 
 		InfoHandler () {
 		}
@@ -19,7 +19,7 @@ class InfoHandler : public EventHandler {
 		}
 
 		virtual int handleSignal ( int signum ) {
-			assert ( signum == INFO_SIG );
+			assert ( signum == SIGRTMIN + INFO_SIG );
 			lakeConcu->printFinedAndConfiscated();
 			return 0;
 		}
