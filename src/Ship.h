@@ -1,21 +1,25 @@
 #ifndef SHIP_H_
 #define SHIP_H_
 
+#include "Queuer.h"
+
 #include <iostream>
 #include <unistd.h>
-#include <stdlib.h>
 
 using namespace std;
 
 class Ship{
   public:
+    static const int CUSTOM_SIG = 13;
+    static const int INSPECTION_SIG = 14;
+    static const int TOURIST_SIG = 15;
     static const char FINED = 'F';
     static const char CONFISCATED = 'C';
 
+    Ship(int);
     void inspectTickets();
     void inspectShip();
     void downloadTourist();
-    Ship(int);
     ~Ship();
 
   private:
