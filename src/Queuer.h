@@ -5,14 +5,12 @@
 
 #include "Queue.h"
 
+#include <string.h>
 #include <stdlib.h>
 
-unsigned int encapsulateQueueingOrder();
-unsigned int isNewPassengerOrder(unsigned int);
-unsigned int isTicketInspectionOrder(unsigned int);
-unsigned int isCustomInspectionOrder(unsigned int);
-unsigned int getDockId(unsigned int);
-unsigned int isGoingQueue(unsigned int);
+int encapsulateEnqueuedInfo(char*, int);
+int getDockId(int);
+int isGoingQueue(int);
 
 
 #endif /* QUEUER_H_ */

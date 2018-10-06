@@ -25,7 +25,7 @@ class Generator{
 
   private:
     void createQueues();
-    void runQueuer(unsigned int);
+    void runQueuer(const char*, int);
     void deleteQueues();
 
     vector <Queue*> goQueues;
