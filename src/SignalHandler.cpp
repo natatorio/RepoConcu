@@ -21,7 +21,7 @@ void SignalHandler :: destruir () {
 	}
 }
 
-EventHandler* SignalHandler :: registrarHandler ( int signum,EventHandler* eh ) {
+EventHandler* SignalHandler :: registrarHandler ( int signum,EventHandler* eh, int flags) {
 
 	EventHandler* old_eh = SignalHandler :: signal_handlers [ signum ];
 	SignalHandler :: signal_handlers [ signum ] = eh;
@@ -29,6 +29,7 @@ EventHandler* SignalHandler :: registrarHandler ( int signum,EventHandler* eh ) 
 	struct sigaction sa;
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = SignalHandler :: dispatcher;
+	sa.sa_flags = flags;
 	sigemptyset ( &sa.sa_mask );	// inicializa la mascara de seniales a bloquear durante la ejecucion del handler como vacio
 	sigaddset ( &sa.sa_mask,signum );
 	sigaction ( signum,&sa,0 );	// cambiar accion de la senial

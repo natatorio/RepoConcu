@@ -8,7 +8,7 @@ int main(int argc, char* argv[]){
 }
 
 Generator::Generator(int nCities){
-  SignalHandler :: getInstance()->registrarHandler(SIGINT,&sigintHandler);
+  SignalHandler :: getInstance()->registrarHandler(SIGINT,&sigintHandler, 0);
   this->nCities = nCities;
   createQueues();
 }
@@ -27,10 +27,8 @@ void Generator::runQueuer(const char* queueType, int dock){
     char* argv[MAX_ARGS + 1];
     strcpy(argv[0], queueType);
     string str = to_string(dock);
-    char city[str.length()+1];
-    strcpy(city, str.c_str());
-    argv[1] = city;
-    strcpy(argv[2], "0");
+    strcpy(argv[1],str.c_str());
+    strcpy(argv[2], Queue::newPassengerOrder);
     argv[3] = NULL;
     execv("queuer", argv);
   }
@@ -39,10 +37,11 @@ void Generator::runQueuer(const char* queueType, int dock){
 void Generator::runEnqueueingProcedure(){
   while ( sigintHandler.getGracefulQuit() == 0 ) {
     int lastEnqueued = 0;
-    wait(&lastEnqueued);
-    lastEnqueued = WEXITSTATUS(lastEnqueued);
-    if(isGoingQueue(lastEnqueued))  runQueuer(Queue::goQueueFilename, getDockId(lastEnqueued));
-    else  runQueuer(Queue::backQueueFilename, getDockId(lastEnqueued));
+    if(wait(&lastEnqueued) > 0){
+      lastEnqueued = WEXITSTATUS(lastEnqueued);
+      if(isGoingQueue(lastEnqueued))  runQueuer(Queue::goQueueFilename, getDockId(lastEnqueued));
+      else  runQueuer(Queue::backQueueFilename, getDockId(lastEnqueued));
+    }
   }
 }
 
@@ -56,5 +55,6 @@ void Generator::deleteQueues(){
 }
 
 Generator::~Generator(){
+  while(wait(NULL) > 0){}
   deleteQueues();
 }

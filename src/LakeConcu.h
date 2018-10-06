@@ -23,7 +23,7 @@ class LakeConcu{
 
 
   private:
-//    char** pidShips;
+    char** pidShips;
     pid_t generatorPid;
     int confiscatedShips;
     int finedPassengers;
@@ -31,6 +31,9 @@ class LakeConcu{
 
     void runShips(int, int);
     void runGenerator();
+    void runCustom();
+    void runInspector();
+    void runTouristDownloader();
     int getConfiscatedShips();
     int getFinedPassengers();
 };
