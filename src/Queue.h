@@ -22,7 +22,7 @@ class Queue{
 
     Queue(const char*, int);
     void enqueueNewPassenger();
-    void enqueueWalkingTourist(int, int, int);
+    void enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket);
     void flush();
     ~Queue();
 
@@ -33,6 +33,7 @@ class Queue{
     MemoriaCompartida<Passenger> buffer;
     void buyTicket(Passenger passenger);
     void writePassenger(Passenger passenger);
+    Passenger createNewPassenger();
 };
 
 
