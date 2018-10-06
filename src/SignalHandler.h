@@ -21,6 +21,7 @@ class SignalHandler {
 		static void destruir ();
 		EventHandler* registrarHandler ( int signum,EventHandler* eh, int flags);
 		int removerHandler ( int signum );
+		void ignorePending(int signum);
 
 };
 

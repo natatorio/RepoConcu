@@ -5,6 +5,9 @@ LakeConcu::LakeConcu(int nShips, int shipCapacity){
   finedPassengers = 0;
   runShips(nShips, shipCapacity);
   runGenerator();
+  runCustom();
+  runInspector();
+  runTouristDownloader();
 }
 
 void LakeConcu::runShips(int nShips, int shipCapacity){
@@ -17,9 +20,12 @@ void LakeConcu::runShips(int nShips, int shipCapacity){
       pipe->setearModo(pipe->ESCRITURA);
       dup2(pipe->getFdEscritura(), 1);
       string str = to_string(shipCapacity);
-      char arg[str.length()+1];
-      strcpy(arg, str.c_str());
-      char *argv[] = {arg, NULL};
+      char argv0[str.length()+1];
+      strcpy(argv0, str.c_str());
+      string s = to_string(N_CITIES);
+      char argv1[s.length()+1];
+      strcpy(argv1, s.c_str());
+      char *argv[] = {argv0, argv1, NULL};
       execv("ship", argv);
     }
     string s = to_string(pid);
@@ -42,7 +48,7 @@ void LakeConcu::runGenerator(){
 }
 
 void LakeConcu::runCustom(){
-  string str = to_string(SIGRTMIN + 13);
+  string str = to_string(SIGRTMIN + Ship::CUSTOM_SIG);
   strcpy(pidShips[0], str.c_str());
   strcpy(pidShips[1], "3");
   if(!fork()){
@@ -51,7 +57,7 @@ void LakeConcu::runCustom(){
 }
 
 void LakeConcu::runInspector(){
-  string str = to_string(SIGRTMIN + 14);
+  string str = to_string(SIGRTMIN + Ship::INSPECTION_SIG);
   strcpy(pidShips[0], str.c_str());
   strcpy(pidShips[1], "2");
   if(!fork()){
@@ -60,7 +66,7 @@ void LakeConcu::runInspector(){
 }
 
 void LakeConcu::runTouristDownloader(){
-  string str = to_string(SIGRTMIN + 15);
+  string str = to_string(SIGRTMIN + Ship::TOURIST_SIG);
   strcpy(pidShips[0], str.c_str());
   strcpy(pidShips[1], "1");
   if(!fork()){

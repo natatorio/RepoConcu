@@ -1,4 +1,6 @@
 #include "Pipe.h"
+#include "Ship.h"
+
 #include <vector>
 #include <string>
 #include <iostream>

@@ -20,11 +20,14 @@ class Ship{
     void inspectTickets();
     void inspectShip();
     void downloadTourist();
+    void visitCity();
+    void setActualCity(int);
     ~Ship();
 
   private:
     int finedPassengers;
     int capacity;
+    int actualCity;
 
 };
 

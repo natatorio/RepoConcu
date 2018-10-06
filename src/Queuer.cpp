@@ -10,6 +10,7 @@
 //argv[3] => walking tourist id else argv[3] (only if argv[2] == 2)
 //argv[4] => walking tourist destiny dock id (only if argv[2] == 2)
 //argv[5] => 1 if walking tourist has ticket (only if argv[2] == 2)
+
 int main(int argc, char* argv[]){
   Queue* queue = new Queue((const char*)argv[0],atoi(argv[1]));
   if(!strcmp(argv[2], Queue::newPassengerOrder)) queue->enqueueNewPassenger();
