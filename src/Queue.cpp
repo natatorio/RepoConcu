@@ -9,12 +9,17 @@
 
 Logger logger("test");
 
-void Queue::enqueueNewPassenger() {
+Queue::Queue(const char *filename, int id) : semaforo_prod(filename, id), semaforo_cons(filename, id) {
+
+}
+
+void Queue::enqueueNewPassenger(int id) {
     this->semaforo_prod.p();
-    Passenger passenger = this->createNewPassenger();
+    Passenger passenger = this->createNewPassenger(id);
     this->buyTicket(passenger);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
+    this->pos++;
 }
 
 void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket) {
@@ -28,6 +33,15 @@ void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTic
     logger.write(str);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
+    this->pos++;
+}
+
+Passenger Queue::getNextPassenger() {
+    this->semaforo_cons.p();
+    Passenger passenger = this->readPassenger();
+    this->semaforo_prod.v();
+    this->pos++;
+    return passenger;
 }
 
 void Queue::buyTicket(Passenger passenger) {
@@ -39,9 +53,12 @@ void Queue::buyTicket(Passenger passenger) {
   }
 }
 
-Passenger Queue::createNewPassenger() {
+Passenger Queue::createNewPassenger(int id) {
     Passenger passenger;
-    passenger.destination =
+    passenger.id = id;
+    passenger.destination = rand() % 4 + 1;
+    passenger.tourist = rand() % 1;
+    return passenger;
 }
 
 void Queue::writePassenger(Passenger passenger) {

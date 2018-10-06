@@ -12,7 +12,7 @@ struct Passenger {
     short int tourist;
 };
 
-class Queue{
+class Queue {
   public:
     static char const* goQueueFilename;
     static char const* backQueueFilename;
@@ -20,9 +20,10 @@ class Queue{
     static char const* walkingTouristOrder;
     static const int size = 10;
 
-    Queue(const char*, int);
-    void enqueueNewPassenger();
+    Queue(const char* filename, int id);
+    void enqueueNewPassenger(int id);
     void enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket);
+    Passenger getNextPassenger();
     void flush();
     ~Queue();
 
@@ -33,7 +34,7 @@ class Queue{
     MemoriaCompartida<Passenger> buffer;
     void buyTicket(Passenger passenger);
     void writePassenger(Passenger passenger);
-    Passenger createNewPassenger();
+    Passenger createNewPassenger(int id);
 };
 
 
