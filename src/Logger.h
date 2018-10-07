@@ -15,6 +15,7 @@ public:
   Logger(std::string& filename);
   Logger(const char* filename);
   void write(std::string& text);
+  void write(char* text);
 
 private:
   void write(std::string& text, int state);

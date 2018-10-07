@@ -72,3 +72,11 @@ void Logger::write(std::string& text) {
   fputs(ctext.c_str(), this->file);
   this->free_lock();
 }
+
+void Logger::write(char* text) {
+  this->set_lock();
+  std::string str(text);
+  std::string ctext = format_logline(str);
+  fputs(ctext.c_str(), this->file);
+  this->free_lock();
+}

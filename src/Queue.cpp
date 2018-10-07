@@ -11,16 +11,22 @@ Logger logger("test");
 const char* Queue::backQueueFilename = "backqueue";
 
 Queue::Queue(const char *filename, int id) : semaforo_prod(filename, this->size), semaforo_cons(filename, 0) {
-
+    this->buffer.crear(filename,'a',10);
 }
 
 Queue::~Queue(){
+    this->buffer.liberar();
+    this->semaforo_prod.eliminar();
+    this->semaforo_cons.eliminar();
 
 };
 
 void Queue::enqueueNewPassenger(int id) {
     this->semaforo_prod.p();
     Passenger passenger = this->createNewPassenger(id);
+    printf("passenger %d", passenger.id);
+    std::string str("passenger add.");
+    logger.write(str);
     this->buyTicket(passenger);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
@@ -49,10 +55,11 @@ Passenger Queue::getNextPassenger() {
 
 void Queue::buyTicket(Passenger passenger) {
   if (passenger.ticket == 0 && rand() > BUY_TICKET_PROBABILITY) {
-    //add id of dock
-    std::string str("Dock : Passenger buy a ticket.");
-    logger.write(str);
-    passenger.ticket = 1;
+      passenger.ticket = 1;
+      //add id of dock
+      printf("passenger buy ticket");
+      std::string str("Dock : Passenger buy a ticket.");
+      logger.write(str);
   }
 }
 
@@ -65,10 +72,11 @@ Passenger Queue::createNewPassenger(int id) {
 }
 
 void Queue::writePassenger(Passenger passenger) {
-  this->buffer.escribir(passenger, this->pos);
-  this->pos++;
-  std::string str("Dock : Passenger pass through turnstile.");
-  logger.write(str);
+    this->buffer.escribir(passenger, this->pos);
+    this->pos++;
+    printf("passanger added");
+    std::string str("Dock : Passenger pass through turnstile.");
+    logger.write(str);
 }
 
 Passenger Queue::readPassenger() {
