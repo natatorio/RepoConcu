@@ -13,7 +13,7 @@
 
 int main(int argc, char* argv[]){
   Queue* queue = new Queue((const char*)argv[0],atoi(argv[1]));
-  if(!strcmp(argv[2], Queue::newPassengerOrder)) queue->enqueueNewPassenger();
+  if(!strcmp(argv[2], Queue::newPassengerOrder)) queue->enqueueNewPassenger(atoi(argv[3]));
   else if(!strcmp(argv[2], Queue::walkingTouristOrder)) queue->enqueueWalkingTourist(atoi(argv[3]),atoi(argv[4]),atoi(argv[5]));;
   delete queue;
   exit(encapsulateEnqueuedInfo(argv[0], (unsigned int)atoi(argv[1])));
