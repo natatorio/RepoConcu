@@ -15,7 +15,7 @@ class InspectionHandler : public EventHandler {
 		}
 
     virtual int handleSignal ( int signum ) {
-			assert ( signum == SIGRTMIN + ship->INSPECTION_SIG );
+			assert ( signum == SIGRTMIN + INSPECTION_SIG );
 			ship->inspectTickets();
 			return 0;
 		}

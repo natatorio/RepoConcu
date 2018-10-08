@@ -29,7 +29,9 @@ void Generator::runQueuer(const char* queueType, int dock){
     string str = to_string(dock);
     strcpy(argv[1],str.c_str());
     strcpy(argv[2], Queue::newPassengerOrder);
-    argv[3] = NULL;
+    str = to_string(actualId++);
+    strcpy(argv[3], str.c_str());
+    argv[4] = NULL;
     execv("queuer", argv);
   }
 }

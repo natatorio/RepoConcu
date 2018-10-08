@@ -15,8 +15,8 @@ class TouristHandler : public EventHandler {
 		}
 
     virtual int handleSignal ( int signum ) {
-			assert ( signum == SIGRTMIN + ship->TOURIST_SIG );
-			ship->downloadTourist();
+			assert ( signum == SIGRTMIN + TOURIST_SIG );
+			ship->downloadWalkingTourist();
 			return 0;
 		}
 

@@ -1,6 +1,9 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
+#define TOURIST 1
+#define HAS_TICKET 1
+
 #include "Semaforo.h"
 #include "MemoriaCompartida.h"
 
@@ -25,6 +28,7 @@ class Queue {
     void enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket);
     Passenger getNextPassenger();
     void flush();
+    Passenger getNextPassenger();
     ~Queue();
 
   private:

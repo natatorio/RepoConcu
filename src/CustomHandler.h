@@ -15,8 +15,8 @@ class CustomHandler : public EventHandler {
 		}
 
     virtual int handleSignal ( int signum ) {
-      assert ( signum == SIGRTMIN + ship->CUSTOM_SIG );
-			ship->downloadTourist();
+      assert ( signum == SIGRTMIN + CUSTOM_SIG );
+			ship->inspectShip();
 			return 0;
 		}
 
