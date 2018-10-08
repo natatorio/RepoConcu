@@ -75,12 +75,12 @@ template <class T> void MemoriaCompartida<T> :: liberar () {
 }
 
 template <class T> void MemoriaCompartida<T> :: escribir ( const T& dato, int pos ) {
-    
-	* ((this->ptrDatos) + (pos + 1) * sizeof(T)) = dato;
+
+	* ((this->ptrDatos) + pos * sizeof(T)) = dato;
 }
 
 template <class T> T MemoriaCompartida<T> :: leer (int pos) const {
-	return ( *((this->ptrDatos) + (1+pos) * sizeof(T)) );
+	return ( *((this->ptrDatos) + pos * sizeof(T)) );
 }
 
 template <class T> int MemoriaCompartida<T> :: cantidadProcesosAdosados () const {

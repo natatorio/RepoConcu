@@ -49,7 +49,6 @@ Passenger Queue::getNextPassenger() {
     this->semaforo_cons.p();
     Passenger passenger = this->readPassenger();
     this->semaforo_prod.v();
-    this->pos++;
     return passenger;
 }
 
@@ -57,7 +56,7 @@ void Queue::buyTicket(Passenger passenger) {
   if (passenger.ticket == 0 && rand() > BUY_TICKET_PROBABILITY) {
       passenger.ticket = 1;
       //add id of dock
-      printf("passenger buy ticket");
+      printf("passenger buy ticket\n");
       std::string str("Dock : Passenger buy a ticket.");
       logger.write(str);
   }
@@ -74,14 +73,15 @@ Passenger Queue::createNewPassenger(int id) {
 void Queue::writePassenger(Passenger passenger) {
     this->buffer.escribir(passenger, this->pos);
     this->pos++;
-    printf("passanger added");
+    printf("passanger added at pos: %d\n", pos);
     std::string str("Dock : Passenger pass through turnstile.");
     logger.write(str);
 }
 
 Passenger Queue::readPassenger() {
     Passenger passenger = this->buffer.leer(this->pos);
-    this->pos--;
+    this->pos++;
+    printf("readPassenger: %d, pos: %d\n", passenger.id, pos);
     std::string str("Dock : Passenger left queue turnstile.");
     logger.write(str);
     return passenger;
