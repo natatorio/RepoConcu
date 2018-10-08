@@ -1,3 +1,6 @@
+
+#define SHIP_ARGS 2
+
 #include "Pipe.h"
 #include "Ship.h"
 
@@ -15,7 +18,6 @@ class LakeConcu{
   public:
     static const char FINED = 'F';
     static const char CONFISCATED = 'C';
-    static const int N_CITIES = 5;
 
     LakeConcu(int, int);
     ~LakeConcu();

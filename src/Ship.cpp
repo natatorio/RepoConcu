@@ -31,7 +31,7 @@ void Ship::inspectTickets(){
 void Ship::downloadWalkingTourist(){
   blockSignals();
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
-    if((*it).tourist == TOURIST){
+    if((*it).tourist == IS_TOURIST && (*it).destination != city){
       int touristId = (*it).id;
       int touristTicket = (*it).ticket;
       int touristDestination = (*it).destination;
@@ -39,15 +39,11 @@ void Ship::downloadWalkingTourist(){
         char* argv[MAX_ARGS + 1];
         if(direction == TRAVELING_FOWARD) strcpy(argv[0], Queue::goQueueFilename);
         else  strcpy(argv[0], Queue::backQueueFilename);
-        string str = to_string(city);
-        strcpy(argv[1],str.c_str());
+        strcpy(argv[1], to_string(city + direction).c_str());
         strcpy(argv[2], Queue::walkingTouristOrder);
-        str = to_string(touristId);
-        strcpy(argv[3], str.c_str());
-        str = to_string(touristTicket);
-        strcpy(argv[4], str.c_str());
-        str = to_string(touristDestination);
-        strcpy(argv[5], str.c_str());
+        strcpy(argv[3], to_string(touristId).c_str());
+        strcpy(argv[4], to_string(touristTicket).c_str());
+        strcpy(argv[5], to_string(touristDestination).c_str());
         argv[6] = NULL;
         execv("queuer", argv);
       }
@@ -58,8 +54,7 @@ void Ship::downloadWalkingTourist(){
   unblockSignals();
 }
 
-char Ship::visitCity(int city, int direction){
-  this->direction = direction;
+char Ship::visitCity(int city){
   this->city = city;
   Queue* boardingQueue;
   if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city);
@@ -89,6 +84,11 @@ bool Ship::downloadPassenger(bool everyone){
     }
   }
   return false;
+}
+
+void Ship::changeDirection(){
+  if(direction == TRAVELING_FOWARD) direction = TRAVELING_BACKWARD;
+  else direction = TRAVELING_FOWARD;
 }
 
 void Ship::blockSignals(){

@@ -1,7 +1,7 @@
 #ifndef GENERATOR_H_
 #define GENERATOR_H_
 
-#include "Queuer.h"
+#include "Queue.h"
 #include "SignalHandler.h"
 #include "SIGINT_Handler.h"
 
@@ -27,6 +27,8 @@ class Generator{
     void createQueues();
     void runQueuer(const char*, int);
     void deleteQueues();
+    int isGoingQueue(int enqueuedInfo);
+    int getDockId(int enqueuedInfo);
 
     vector <Queue*> goQueues;
     vector <Queue*> backQueues;

@@ -1,9 +1,10 @@
 CPP = g++
 CPPFLAGS = -std=gnu++11 -Wall
 LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o
-SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o Queuer.o Queue.o
-GENERATOR = Generator.o SignalHandler.o Queuer.o Queue.o
-QUEUER = Queuer.o Queue.o
+SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o Dock.o $(QUEUE)
+GENERATOR = Generator.o SignalHandler.o $(QUEUE)
+QUEUER = Queuer.o $(QUEUE)
+QUEUE = Queue.o Logger.o Semaforo.o
 SIGNALSENDER = SignalSender.o SignalHandler.o
 execLakeConcu = lakeConcu
 execShip = ship
@@ -44,6 +45,15 @@ SignalHandler.o: SignalHandler.cpp SignalHandler.h
 
 SignalSender.o: SignalSender.cpp SignalSender.h
 	$(CPP) $(CPPFLAGS) -c SignalSender.cpp
+
+Logger.o: Logger.cpp Logger.h
+	$(CPP) $(CPPFLAGS) -c Logger.cpp
+
+Dock.o: Dock.cpp Dock.h
+	$(CPP) $(CPPFLAGS) -c Dock.cpp
+
+Semaforo.o: Semaforo.cpp Semaforo.h
+	$(CPP) $(CPPFLAGS) -c Semaforo.cpp
 
 buildLakeConcu: $(LAKECONCU)
 	$(CPP) $(CPPFLAGS) $(LAKECONCU) -o $(execLakeConcu)

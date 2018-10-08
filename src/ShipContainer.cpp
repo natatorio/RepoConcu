@@ -13,16 +13,22 @@ ShipContainer::ShipContainer(int capacity, int nCities){
   customHandler.addShip(ship);
   inspectionHandler.addShip(ship);
   touristHandler.addShip(ship);
+  for(int i = 0; i != nCities; i++){
+    docks.push_back(new Dock(i));
+  }
 }
 
 void ShipContainer::startJourney(){
   for(int i = 0; i > -1; i += direction){
-    //TODO lock dock i
+    docks[i]->lock();
     ignorePendingSignals();
-    char shipState = ship->visitCity(i, direction);
-    //TODO unlock dock i
+    char shipState = ship->visitCity(i);
+    docks[i]->unlock();
     if(shipState == Ship::CONFISCATED)  break;
-    if(i == nCities - 1)  direction = TRAVELING_BACKWARD;
+    if(i == nCities - 1){
+      ship->changeDirection();
+      direction = TRAVELING_BACKWARD;
+    }
   }
 }
 
@@ -37,5 +43,6 @@ void ShipContainer::ignorePendingSignals(){
 
 ShipContainer::~ShipContainer(){
   SignalHandler :: destruir();
+  for(int i = 0; i != nCities; i++) delete docks[i];
   delete ship;
 }

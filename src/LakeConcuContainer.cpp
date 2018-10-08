@@ -15,7 +15,7 @@ int main (int argc, char* argv[]){
 LakeConcuContainer::LakeConcuContainer(int nShips, int shipCapacity){
   lakeConcu = new LakeConcu(nShips, shipCapacity);
   infoHandler.addLakeConcu(lakeConcu);
-  SignalHandler :: getInstance()->registrarHandler (infoHandler.INFO_SIG, &infoHandler, 0);
+  SignalHandler :: getInstance()->registrarHandler (SIGRTMIN + infoHandler.INFO_SIG, &infoHandler, 0);
   lakeConcu->listenShips();
   kill(lakeConcu->getGeneratorPid(), SIGINT);
 }
