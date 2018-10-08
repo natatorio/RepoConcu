@@ -13,7 +13,7 @@ LakeConcu::LakeConcu(int nShips, int shipCapacity){
 }
 
 void LakeConcu::runShips(int nShips, int shipCapacity){
-  pidShips = new char*[nShips + SIGNALSENDER_ARGS + 1];
+  pidShips = new char[nShips + SIGNALSENDER_ARGS + 1][MAX_ARG_SIZE];
   pid_t pid;
   pipe = new Pipe();
   for(int i=0; i!=nShips; i++){
@@ -21,35 +21,36 @@ void LakeConcu::runShips(int nShips, int shipCapacity){
     if(!pid){
       pipe->setearModo(pipe->ESCRITURA);
       dup2(pipe->getFdEscritura(), 1);
-      char* argv[SHIP_ARGS + 1];
+      char argv[SHIP_ARGS][MAX_ARG_SIZE];
       strcpy(argv[0], to_string(shipCapacity).c_str());
       strcpy(argv[1], to_string(N_CITIES).c_str());
-      argv[2] = NULL;
-      execv("ship", argv);
+      char* const args[] = {argv[0], argv[1], NULL};
+      execv("ship", args);
     }
     strcpy(pidShips[i + SIGNALSENDER_ARGS], to_string(pid).c_str());
   }
-  pidShips[nShips + SIGNALSENDER_ARGS] = NULL;
   pipe->setearModo(pipe->LECTURA);
 }
 
 void LakeConcu::runGenerator(){
-  char* argv[GENERATOR_ARGS + 1];
+  char argv[GENERATOR_ARGS + 1][MAX_ARG_SIZE];
   strcpy(argv[0], to_string(N_CITIES).c_str());
-  argv[1] = NULL;
+  char* const args[] = {argv[0], NULL};
   generatorPid = fork();
-  if(!generatorPid) execv("generator", argv);
+  if(!generatorPid) execv("generator", args);
 }
 
 void LakeConcu::runCustom(){
   strcpy(pidShips[0], to_string(SIGRTMIN + CUSTOM_SIG).c_str());
   strcpy(pidShips[1], to_string(CUSTOM_SLEEP_SECS).c_str());
-  if(!fork()) execv("signalSender", pidShips);
+  char* const args[] = {pidShips, NULL};
+  if(!fork()) execv("signalSender", args);
 }
 
 void LakeConcu::runInspector(){
   strcpy(pidShips[0], to_string(SIGRTMIN + INSPECTION_SIG).c_str());
   strcpy(pidShips[1], to_string(INSPECTOR_SLEEP_SECS).c_str());
+
   if(!fork()) execv("signalSender", pidShips);
 }
 
