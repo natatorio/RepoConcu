@@ -24,7 +24,7 @@ void Generator::createQueues(){
 
 void Generator::runQueuer(const char* queueType, int dock){
   if(!fork()){
-    char* argv[MAX_ARGS + 1];
+    char* argv[QUEUER_ARGS + 1];
     strcpy(argv[0], queueType);
     strcpy(argv[1], to_string(dock).c_str());
     strcpy(argv[2], Queue::newPassengerOrder);

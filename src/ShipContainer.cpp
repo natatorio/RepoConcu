@@ -13,9 +13,7 @@ ShipContainer::ShipContainer(int capacity, int nCities){
   customHandler.addShip(ship);
   inspectionHandler.addShip(ship);
   touristHandler.addShip(ship);
-  for(int i = 0; i != nCities; i++){
-    docks.push_back(new Dock(i));
-  }
+  for(int i = 0; i != nCities; i++) docks.push_back(new Dock(i));
 }
 
 void ShipContainer::startJourney(){
@@ -25,10 +23,7 @@ void ShipContainer::startJourney(){
     char shipState = ship->visitCity(i);
     docks[i]->unlock();
     if(shipState == Ship::CONFISCATED)  break;
-    if(i == nCities - 1){
-      ship->changeDirection();
-      direction = TRAVELING_BACKWARD;
-    }
+    if(i == nCities - 1)  changeDirection();
   }
 }
 
@@ -39,6 +34,11 @@ void ShipContainer::ignorePendingSignals(){
   SignalHandler :: getInstance()->registrarHandler (SIGRTMIN + CUSTOM_SIG, &customHandler, SA_RESTART);
   SignalHandler :: getInstance()->registrarHandler (SIGRTMIN + INSPECTION_SIG, &inspectionHandler, SA_RESTART);
   SignalHandler :: getInstance()->registrarHandler (SIGRTMIN + TOURIST_SIG, &touristHandler, SA_RESTART);
+}
+
+void ShipContainer::changeDirection(){
+  ship->changeDirection();
+  direction = TRAVELING_BACKWARD;
 }
 
 ShipContainer::~ShipContainer(){

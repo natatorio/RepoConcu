@@ -5,7 +5,7 @@
 Ship::Ship(int shipCapacity){
   blockSignals();
   capacity = shipCapacity;
-  srand((int)getpid());
+  srand(getpid());
   if(rand()%PRECISION < PRECISION * LEGAL_SHIP_PROBABILITY)  legalShip = true;
   else legalShip = false;
 }
@@ -14,7 +14,6 @@ void Ship::inspectShip(){
   blockSignals();
   state = CONFISCATED;
   cout << CONFISCATED << flush;
-  unblockSignals();
 }
 
 void Ship::inspectTickets(){
@@ -36,7 +35,7 @@ void Ship::downloadWalkingTourist(){
       int touristTicket = (*it).ticket;
       int touristDestination = (*it).destination;
       if(!fork()){
-        char* argv[MAX_ARGS + 1];
+        char* argv[QUEUER_ARGS + 1];
         if(direction == TRAVELING_FOWARD) strcpy(argv[0], Queue::goQueueFilename);
         else  strcpy(argv[0], Queue::backQueueFilename);
         strcpy(argv[1], to_string(city + direction).c_str());

@@ -1,12 +1,4 @@
 #include "Logger.h"
-#include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
-#include <chrono>
-#include <sstream>
 
 Logger::Logger() {
 }
@@ -15,7 +7,7 @@ Logger::~Logger() {
   fclose(this->file);
 }
 
-Logger::Logger(std::string& filename) {
+Logger::Logger(string& filename) {
   //this->fd = open(filename.c_str(), O_CREAT | O_RDWR | O_TRUNC);
   this->file = fopen(filename.c_str(), "w");
   this->fd = fileno(this->file);
@@ -45,39 +37,39 @@ void Logger::free_lock() {
 }
 
 char* getLocalTime() {
-  //auto t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+  //auto t = chrono::system_clock::to_time_t(chrono::system_clock::now());
   //TODO
   return NULL;
 }
 
-std::string Logger::format_logline(std::string& text) {
-  std::time_t rawtime;
-  std::tm* timeinfo;
+string Logger::format_logline(string& text) {
+  time_t rawtime;
+  tm* timeinfo;
   char buffer [80];
 
-  std::time(&rawtime);
-  timeinfo = std::localtime(&rawtime);
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
 
-  std::strftime(buffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
-  std::puts(buffer);
+  strftime(buffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
+  puts(buffer);
 
-  std::stringstream stringStream;
+  stringstream stringStream;
   stringStream << "[" << buffer << "][" << getpid() << "] " << text << '\n';
-  std::string buf = stringStream.str();
+  string buf = stringStream.str();
   return buf;
 }
 
-void Logger::write(std::string& text) {
+void Logger::write(string& text) {
   this->set_lock();
-  std::string ctext = format_logline(text);
+  string ctext = format_logline(text);
   fputs(ctext.c_str(), this->file);
   this->free_lock();
 }
 
 void Logger::write(char* text) {
   this->set_lock();
-  std::string str(text);
-  std::string ctext = format_logline(str);
+  string str(text);
+  string ctext = format_logline(str);
   fputs(ctext.c_str(), this->file);
   this->free_lock();
 }

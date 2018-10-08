@@ -5,18 +5,12 @@
 #include "SignalHandler.h"
 #include "SIGINT_Handler.h"
 
-#include <sys/types.h>
 #include <sys/wait.h>
-#include <unistd.h>
 #include <vector>
-#include <iostream>
-
-using namespace std;
 
 class Generator{
   public:
-
-    Generator(int);
+    Generator(int nCities);
     ~Generator();
     void runEnqueueingProcedure();
 
@@ -25,7 +19,7 @@ class Generator{
 
   private:
     void createQueues();
-    void runQueuer(const char*, int);
+    void runQueuer(const char* queueType, int dock);
     void deleteQueues();
     int isGoingQueue(int enqueuedInfo);
     int getDockId(int enqueuedInfo);
@@ -34,6 +28,5 @@ class Generator{
     vector <Queue*> backQueues;
     int actualId = 0;
 };
-
 
 #endif /* GENERATORCONTAINER_H_ */
