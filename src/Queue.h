@@ -37,6 +37,7 @@ class Queue {
     MemoriaCompartida<Passenger> buffer;
     void buyTicket(Passenger passenger);
     void writePassenger(Passenger passenger);
+    Passenger readPassenger();
     Passenger createNewPassenger(int id);
 };
 

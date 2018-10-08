@@ -75,6 +75,7 @@ template <class T> void MemoriaCompartida<T> :: liberar () {
 }
 
 template <class T> void MemoriaCompartida<T> :: escribir ( const T& dato, int pos ) {
+
 	* ((this->ptrDatos) + pos * sizeof(T)) = dato;
 }
 
