@@ -7,7 +7,8 @@
 #define TOURIST 1
 #define BUY_TICKET_PROBABILITY 0.87
 
-Logger logger("test");
+std::string s = "test";
+Logger logger(s);
 
 Queue::Queue(const char *filename, int id) : semaforo_prod(filename, id), semaforo_cons(filename, id) {
 

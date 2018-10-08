@@ -1,7 +1,7 @@
 #include "LakeConcu.h"
 #include "Logger.h"
 
-Logger logger("test");
+//Logger logger("test");
 
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
@@ -104,7 +104,7 @@ void LakeConcu::printFinedAndConfiscated(){
 }
 
 LakeConcu::~LakeConcu(){
-//  delete[] pidShips;
+  delete[] pidShips;
   pipe->cerrar();
   delete pipe;
 }

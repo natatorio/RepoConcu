@@ -26,8 +26,8 @@ void Generator::runQueuer(const char* queueType, int dock){
   if(!fork()){
     char* argv[MAX_ARGS + 1];
     strcpy(argv[0], queueType);
-    string str = to_string(dock);
-    strcpy(argv[1],str.c_str());
+//    string str = to_string(dock);
+    strcpy(argv[1], to_string(dock).c_str());
     strcpy(argv[2], Queue::newPassengerOrder);
     str = to_string(actualId++);
     strcpy(argv[3], str.c_str());
@@ -57,6 +57,6 @@ void Generator::deleteQueues(){
 }
 
 Generator::~Generator(){
-  while(wait(NULL) > 0){}
   deleteQueues();
+  while(wait(NULL) > 0){}
 }
