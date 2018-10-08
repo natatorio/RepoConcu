@@ -5,12 +5,7 @@
 
 #include "Queue.h"
 
-#include <string.h>
-#include <stdlib.h>
 
-int encapsulateEnqueuedInfo(char*, unsigned int);
-int getDockId(int);
-int isGoingQueue(int);
-
+int encapsulateEnqueuedInfo(char* filename, unsigned int dock);
 
 #endif /* QUEUER_H_ */

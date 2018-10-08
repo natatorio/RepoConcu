@@ -5,12 +5,10 @@
 #include "SignalHandler.h"
 #include "InfoHandler.h"
 
-using namespace std;
-
 class LakeConcuContainer{
   public:
-
-    LakeConcuContainer(int, int);
+    LakeConcuContainer(int nShips, int shipCapacity);
+    void listenShips();
     ~LakeConcuContainer();
 
   private:
@@ -18,6 +16,5 @@ class LakeConcuContainer{
     InfoHandler infoHandler;
 
 };
-
 
 #endif /* LAKECONCUCONTAINER_H_ */

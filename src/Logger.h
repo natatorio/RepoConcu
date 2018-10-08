@@ -2,6 +2,16 @@
 #define LOGGER_H_
 
 #include <string>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+#include <chrono>
+#include <sstream>
+
+using namespace std;
 
 class Logger {
 private:
@@ -12,14 +22,14 @@ public:
   Logger();
   ~Logger();
 
-  Logger(std::string& filename);
+  Logger(string& filename);
   Logger(const char* filename);
-  void write(std::string& text);
+  void write(string& text);
   void write(char* text);
 
 private:
-  void write(std::string& text, int state);
-  std::string format_logline(std::string& text);
+  void write(string& text, int state);
+  string format_logline(string& text);
   void set_lock();
   void free_lock();
 

@@ -17,15 +17,6 @@
 #include "Semaforo.h"
 #include "MemoriaCompartida.h"
 
-#include <string>
-#include <sstream>
-#include <stdlib.h>
-#include <time.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-using namespace std;
-
 struct Passenger {
     int id;
     short int ticket;

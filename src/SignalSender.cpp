@@ -1,3 +1,6 @@
+#ifndef SIGNALSENDER_H_
+#define SIGNALSENDER_H_
+
 #include "SignalSender.h"
 
 int main(int argc, char *argv[]){
@@ -11,25 +14,28 @@ SignalSender::SignalSender(char *argv[]){
   SignalHandler :: getInstance()->registrarHandler(SIGINT,&sigintHandler, 0);
   signum = atoi(argv[0]);
   sleepTime = atoi(argv[1]);
-  for(int i = 2; argv[i]; i++)  addShip(argv[i]);
-  srand(time(NULL) & (int)getpid());
+  for(int i = 2; argv[i]; i++)  addShip((pid_t)atoi(argv[i]));
+  srand(getpid());
 }
 
-void SignalSender::addShip(char *ship){
-  ships.push_back((pid_t)atoi(ship));
+void SignalSender::addShip(pid_t shipPid){
+  ships.push_back(shipPid);
 }
 
 pid_t SignalSender::getRandomShip(){
-  return ships[rand()%ships.size()];
+  return ships[rand() % ships.size()];
 }
 
 void SignalSender::startSending(){
+  sleep(sleepTime);
   while ( sigintHandler.getGracefulQuit() == 0 ) {
-    sleep(sleepTime);
     kill(getRandomShip(), signum);
+    sleep(sleepTime);
   }
 }
 
 SignalSender::~SignalSender(){
 
 }
+
+#endif /* SIGNALSENDER_H_ */

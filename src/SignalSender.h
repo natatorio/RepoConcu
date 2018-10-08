@@ -8,11 +8,9 @@
 #include "SignalHandler.h"
 #include "SIGINT_Handler.h"
 
-using namespace std;
-
 class SignalSender{
   public:
-    SignalSender(char**);
+    SignalSender(char** argv);
     void startSending();
     ~SignalSender();
 
@@ -22,6 +20,6 @@ class SignalSender{
     int sleepTime;
     SIGINT_Handler sigintHandler;
 
-    void addShip(char*);
+    void addShip(pid_t shipPid);
     pid_t getRandomShip();
 };
