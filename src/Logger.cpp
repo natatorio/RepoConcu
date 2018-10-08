@@ -46,7 +46,8 @@ void Logger::free_lock() {
 
 char* getLocalTime() {
   //auto t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
+  //TODO
+  return NULL;
 }
 
 std::string Logger::format_logline(std::string& text) {

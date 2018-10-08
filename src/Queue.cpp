@@ -1,46 +1,62 @@
 #include "Queue.h"
-#include "Logger.h"
-#include <string>
-#include <stdlib.h>
-#include <time.h>
 
-#define TOURIST 1
-#define BUY_TICKET_PROBABILITY 0.87
 
 Logger logger("test");
+const char* Queue::goQueueFilename = "goqueue";
 const char* Queue::backQueueFilename = "backqueue";
+const char* Queue::newPassengerOrder = "worker";
+const char* Queue::walkingTouristOrder = "tourist";
 
-Queue::Queue(const char *filename, int id) : semaforo_prod(filename, this->size), semaforo_cons(filename, 0) {
-    this->buffer.crear(filename,'a',10);
+Queue::Queue(const char *filename, int city) : semaforo_prod(filename, QUEUE_SIZE, city), semaforo_cons(filename, 0, city) {
+    this->buffer.crear(filename, city, QUEUE_SIZE);
+    if(filename == goQueueFilename) travelingWay = TRAVELING_FOWARD;
+    else  travelingWay = TRAVELING_BACKWARD;
+    srand(getpid());
+    this->city = city;
 }
 
 Queue::~Queue(){
-    this->buffer.liberar();
-    this->semaforo_prod.eliminar();
-    this->semaforo_cons.eliminar();
+    if(this->buffer.liberar() == LIBERADA){ // solo elimino la cola cuando soy el último proceso cerrando la cola
+      this->semaforo_prod.eliminar();
+      this->semaforo_cons.eliminar();
+    }
 
 };
 
 void Queue::enqueueNewPassenger(int id) {
     this->semaforo_prod.p();
     Passenger passenger = this->createNewPassenger(id);
-    printf("passenger %d", passenger.id);
-    std::string str("passenger add.");
-    logger.write(str);
-    this->buyTicket(passenger);
+    //printf("Passenger %d", passenger.id);
+    ostringstream msg;
+    msg << "Passenger " << passenger.id;
+    if(passenger.tourist == IS_TOURIST) msg << " is a tourist, ";
+    msg << " arrived at dock " << city;
+    if(passenger.ticket == HAS_TICKET)  msg << ", bought a ticket ";
+    msg << "and is traveling to city " << passenger.destination << "." << endl;
+    string s = msg.str();
+    logger.write(s);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
 }
 
 void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket) {
+    ostringstream msg;
+    msg << "Tourist " << touristId << " arrived walking to city " << city;
+    if(destinationDock == city){
+      msg << " which is his/her final destination." << endl;
+      string s = msg.str();
+      logger.write(s);
+      return;
+    }
+    msg << "and is traveling to city " << destinationDock << "." << endl;
     this->semaforo_prod.p();
     Passenger passenger;
     passenger.destination = destinationDock;
     passenger.id = touristId;
     passenger.ticket = hasTicket;
-    passenger.tourist = TOURIST;
-    std::string str("Dock : Tourist walk to next city.");
-    logger.write(str);
+    passenger.tourist = IS_TOURIST;
+    string s = msg.str();
+    logger.write(s);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
 }
@@ -48,41 +64,44 @@ void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTic
 Passenger Queue::getNextPassenger() {
     this->semaforo_cons.p();
     Passenger passenger = this->readPassenger();
+    ostringstream msg;
+    msg << "Passenger " << passenger.id;
+    if(passenger.tourist == IS_TOURIST) msg << " is a tourist";
+    if(passenger.ticket == HAS_TICKET)  msg << ", has a ticket";
+    msg << " and got onboard of a ship in city " << city << " traveling to city " << passenger.destination << "." << endl;
+    string s = msg.str();
+    logger.write(s);
     this->semaforo_prod.v();
     return passenger;
-}
-
-void Queue::buyTicket(Passenger passenger) {
-  if (passenger.ticket == 0 && rand() > BUY_TICKET_PROBABILITY) {
-      passenger.ticket = 1;
-      //add id of dock
-      printf("passenger buy ticket\n");
-      std::string str("Dock : Passenger buy a ticket.");
-      logger.write(str);
-  }
 }
 
 Passenger Queue::createNewPassenger(int id) {
     Passenger passenger;
     passenger.id = id;
-    passenger.destination = rand() % 4 + 1;
-    passenger.tourist = rand() % 1;
+    passenger.destination = city + travelingWay * (1 + rand() % (N_CITIES - 1 - city));
+    if(rand() % PRECISION < PRECISION * TOURIST_PROBABILITY)  passenger.tourist = IS_TOURIST;
+    else passenger.tourist = ISNT_TOURIST;
+    if(rand() % PRECISION < PRECISION * BUY_TICKET_PROBABILITY) passenger.ticket = HAS_TICKET;
+    else passenger.ticket = HASNT_TICKET;
     return passenger;
 }
 
+void Queue::flush(){
+  for(int i = this->semaforo_cons.getCont(); i != 0; i--){
+    this->semaforo_cons.p();
+    this->semaforo_prod.v();
+  }
+}
+
 void Queue::writePassenger(Passenger passenger) {
-    this->buffer.escribir(passenger, this->pos);
-    this->pos++;
-    printf("passanger added at pos: %d\n", pos);
-    std::string str("Dock : Passenger pass through turnstile.");
-    logger.write(str);
+    this->buffer.escribir(passenger, this->posWrite);
+    this->posWrite = (this->posWrite + 1) % QUEUE_SIZE;
+    //printf("passenger added at pos: %d\n", posWrite);
 }
 
 Passenger Queue::readPassenger() {
-    Passenger passenger = this->buffer.leer(this->pos);
-    this->pos++;
-    printf("readPassenger: %d, pos: %d\n", passenger.id, pos);
-    std::string str("Dock : Passenger left queue turnstile.");
-    logger.write(str);
+    Passenger passenger = this->buffer.leer(this->posRead);
+    this->posRead = (this->posRead + 1) % QUEUE_SIZE;
+    //printf("readPassenger: %d, pos: %d\n", passenger.id, posRead);
     return passenger;
 }

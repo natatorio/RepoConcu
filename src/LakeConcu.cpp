@@ -22,18 +22,13 @@ void LakeConcu::runShips(int nShips, int shipCapacity){
     if(!pid){
       pipe->setearModo(pipe->ESCRITURA);
       dup2(pipe->getFdEscritura(), 1);
-      string str = to_string(shipCapacity);
-      char argv0[str.length()+1];
-      strcpy(argv0, str.c_str());
-      string s = to_string(N_CITIES);
-      char argv1[s.length()+1];
-      strcpy(argv1, s.c_str());
-      char *argv[] = {argv0, argv1, NULL};
+      char* argv[SHIP_ARGS + 1];
+      strcpy(argv[0], to_string(shipCapacity).c_str());
+      strcpy(argv[1], to_string(N_CITIES).c_str());
+      argv[2] = NULL;
       execv("ship", argv);
     }
-    string s = to_string(pid);
-    pidShips[i+2] =new char[s.length()+1];
-    strcpy(pidShips[i+2], s.c_str());
+    strcpy(pidShips[i+2], to_string(pid).c_str());
   }
   pidShips[nShips+2] = NULL;
   pipe->setearModo(pipe->LECTURA);

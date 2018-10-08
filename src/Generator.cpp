@@ -26,11 +26,9 @@ void Generator::runQueuer(const char* queueType, int dock){
   if(!fork()){
     char* argv[MAX_ARGS + 1];
     strcpy(argv[0], queueType);
-//    string str = to_string(dock);
     strcpy(argv[1], to_string(dock).c_str());
     strcpy(argv[2], Queue::newPassengerOrder);
-    str = to_string(actualId++);
-    strcpy(argv[3], str.c_str());
+    strcpy(argv[3], to_string(actualId++).c_str());
     argv[4] = NULL;
     execv("queuer", argv);
   }
@@ -45,6 +43,16 @@ void Generator::runEnqueueingProcedure(){
       else  runQueuer(Queue::backQueueFilename, getDockId(lastEnqueued));
     }
   }
+}
+
+int Generator::getDockId(int enqueuedInfo){
+  unsigned int dockId = ((unsigned int)enqueuedInfo & 0xFFFFFFFE) >> 1;
+  return (int)dockId;
+}
+
+int Generator::isGoingQueue(int enqueuedInfo){
+  unsigned int answer = enqueuedInfo & 1;
+  return (int)answer;
 }
 
 void Generator::deleteQueues(){

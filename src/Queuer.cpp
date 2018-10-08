@@ -14,7 +14,11 @@
 int main(int argc, char* argv[]){
   Queue* queue = new Queue((const char*)argv[0],atoi(argv[1]));
   if(!strcmp(argv[2], Queue::newPassengerOrder)) queue->enqueueNewPassenger(atoi(argv[3]));
-  else if(!strcmp(argv[2], Queue::walkingTouristOrder)) queue->enqueueWalkingTourist(atoi(argv[3]),atoi(argv[4]),atoi(argv[5]));;
+  else if(!strcmp(argv[2], Queue::walkingTouristOrder)){
+    srand(getpid());
+    sleep(1 + rand() % MAX_WALKING_SECS);
+    queue->enqueueWalkingTourist(atoi(argv[3]),atoi(argv[4]),atoi(argv[5]));;
+  }
   delete queue;
   exit(encapsulateEnqueuedInfo(argv[0], (unsigned int)atoi(argv[1])));
 }
@@ -23,14 +27,4 @@ int encapsulateEnqueuedInfo(char* queueFilename, unsigned int dock){
   unsigned int enqueuedInfo = dock << 1;
   if(!strcmp(queueFilename, Queue::goQueueFilename))  enqueuedInfo++;
   return (int)enqueuedInfo;
-}
-
-int getDockId(int enqueuedInfo){
-  unsigned int dockId = ((unsigned int)enqueuedInfo & 0xFFFFFFFE) >> 1;
-  return (int)dockId;
-}
-
-int isGoingQueue(int enqueuedInfo){
-  unsigned int answer = enqueuedInfo & 1;
-  return (int)answer;
 }

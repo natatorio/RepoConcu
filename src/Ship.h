@@ -4,12 +4,10 @@
 #define CUSTOM_SIG 13
 #define INSPECTION_SIG 14
 #define TOURIST_SIG 15
-#define TRAVELING_FOWARD 1
-#define TRAVELING_BACKWARD -1
 #define LEGAL_SHIP_PROBABILITY 0.78
-#define PRECISION 100
+#define MAX_ARGS 6
 
-#include "Queuer.h"
+#include "Queue.h"
 
 #include <signal.h>
 #include <iostream>
@@ -31,13 +29,14 @@ class Ship{
     void inspectTickets();
     void inspectShip();
     void downloadWalkingTourist();
-    char visitCity(int, int);
+    char visitCity(int);
+    void changeDirection();
     ~Ship();
 
   private:
     int finedPassengers;
     int capacity;
-    int direction;
+    int direction = TRAVELING_FOWARD;
     int city;
     list<Passenger> passengers;
     bool legalShip;

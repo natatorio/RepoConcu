@@ -2,6 +2,9 @@
 #include "TouristHandler.h"
 #include "InspectorHandler.h"
 #include "SignalHandler.h"
+#include "Dock.h"
+
+#include <vector>
 
 class ShipContainer{
   public:
@@ -16,6 +19,7 @@ class ShipContainer{
     TouristHandler touristHandler;
     int nCities;
     int direction = TRAVELING_FOWARD;
+    vector <Dock*> docks;
 
     void ignorePendingSignals();
 };
