@@ -44,7 +44,7 @@ string Logger::format_logline(string& text) {
   time(&rawtime);
   timeinfo = localtime(&rawtime);
 
-  strftime(buffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
+  strftime(buffer,80,"%Y-%m-%d %H:%M:%S",timeinfo);
 
   stringstream stringStream;
   stringStream << "[" << buffer << "][" << getpid() << "] " << text << endl;
@@ -52,10 +52,20 @@ string Logger::format_logline(string& text) {
   return buf;
 }
 
+void Logger::write(ostringstream& text) {
+  this->set_lock();
+  string str = text.str();
+  string ctext = format_logline(str);
+  fputs(ctext.c_str(), this->file);
+  fflush(this->file);
+  this->free_lock();
+}
+
 void Logger::write(string& text) {
   this->set_lock();
   string ctext = format_logline(text);
   fputs(ctext.c_str(), this->file);
+  fflush(this->file);
   this->free_lock();
 }
 
@@ -64,5 +74,6 @@ void Logger::write(char* text) {
   string str(text);
   string ctext = format_logline(str);
   fputs(ctext.c_str(), this->file);
+  fflush(this->file);
   this->free_lock();
 }

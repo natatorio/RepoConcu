@@ -37,6 +37,7 @@ class Ship{
     list<Passenger> passengers;
     bool legalShip;
     char state = 0;
+    Logger* logger;
 
     bool downloadPassenger(bool everyone);
 };

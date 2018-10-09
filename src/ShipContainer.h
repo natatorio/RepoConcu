@@ -23,6 +23,7 @@ class ShipContainer{
     int nCities;
     int direction = TRAVELING_FOWARD;
     vector <Dock*> docks;
+    Logger* logger;
 
     void ignorePendingSignals();
     void changeDirection();

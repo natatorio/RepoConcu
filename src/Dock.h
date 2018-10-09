@@ -13,7 +13,7 @@ public:
   void unlock();
 
 private:
-  Semaforo* semaphore;
+  Semaforo semaphore;
   MemoriaCompartida <int> dockMem;
 };
 

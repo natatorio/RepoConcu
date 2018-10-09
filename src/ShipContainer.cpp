@@ -9,6 +9,7 @@ int main(int argc, char* argv[]){
 
 ShipContainer::ShipContainer(int capacity, int nCities){
   this->nCities = nCities;
+  logger = new Logger("test");
   ship = new Ship(capacity);
   customHandler.addShip(ship);
   inspectionHandler.addShip(ship);
@@ -19,13 +20,17 @@ ShipContainer::ShipContainer(int capacity, int nCities){
 void ShipContainer::startJourney(){
   for(int i = 0; i > -1; i += direction){
     docks[i]->lock();
+    ostringstream msg;
+    msg << "A ship arrived to dock " << i << endl;
+    logger->write(msg);
     ignorePendingSignals();
-    //char shipState = ship->visitCity(i);
-    sleep(1);
-    char shipState = 0;
-    docks[i]->unlock();
-    if(shipState == Ship::CONFISCATED)  break;
     if(i == nCities - 1)  changeDirection();
+    char shipState = ship->visitCity(i);
+    docks[i]->unlock();
+    msg.str("");
+    msg << "A ship left dock " << i << endl;
+    logger->write(msg);
+    if(shipState == Ship::CONFISCATED)  break;
   }
 }
 
@@ -46,5 +51,6 @@ void ShipContainer::changeDirection(){
 ShipContainer::~ShipContainer(){
   SignalHandler :: destruir();
   for(int i = 0; i != nCities; i++) delete docks[i];
+  delete logger;
   delete ship;
 }

@@ -27,6 +27,7 @@ public:
   Logger(const char* filename);
   void write(string& text);
   void write(char* text);
+  void write(ostringstream& text);
 
 private:
   void write(string& text, int state);

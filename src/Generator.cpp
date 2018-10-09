@@ -1,9 +1,7 @@
 #include "Generator.h"
 
-#define PRUEBA 1
-
 int main(int argc, char* argv[]){
-  Generator* generator = new Generator(atoi(argv[0+PRUEBA]));
+  Generator* generator = new Generator(atoi(argv[0]));
   generator->runEnqueueingProcedure();
   delete generator;
   exit(0);
@@ -54,13 +52,11 @@ void Generator::runEnqueueingProcedure(){
 
 int Generator::getDockId(int enqueuedInfo){
   unsigned int dockId = ((unsigned int)enqueuedInfo & 0xFFFFFFFE) >> 1;
-  cout << "Dock " << dockId << endl;
   return (int)dockId;
 }
 
 int Generator::isGoingQueue(int enqueuedInfo){
   unsigned int answer = enqueuedInfo & 1;
-  cout << "isGoingQueue " << answer << endl;
   return (int)answer;
 }
 

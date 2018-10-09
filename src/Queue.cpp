@@ -1,7 +1,6 @@
 #include "Queue.h"
 
 
-Logger logger("test");
 const char* Queue::goQueueFilename = "goqueue.cc";
 const char* Queue::backQueueFilename = "backqueue.cc";
 const char* Queue::newPassengerOrder = "worker";
@@ -14,28 +13,27 @@ Queue::Queue(const char *filename, int city, int init)
     else  travelingWay = TRAVELING_BACKWARD;
     srand(getpid());
     this->city = city;
+    this->logger = new Logger("test");
 }
 
 Queue::~Queue(){
     if(this->buffer.liberar() == LIBERADA){ // solo elimino la cola cuando soy el último proceso cerrando la cola
       this->semaforo_prod.eliminar();
       this->semaforo_cons.eliminar();
+      delete logger;
     }
 };
 
 void Queue::enqueueNewPassenger(int id) {
-    cout << "Se pueden encolar " << semaforo_prod.getCont() << endl;
     this->semaforo_prod.p();
     Passenger passenger = this->createNewPassenger(id);
-    //printf("Passenger %d", passenger.id);
     ostringstream msg;
     msg << "Passenger " << passenger.id;
     if(passenger.tourist == IS_TOURIST) msg << " is a tourist,";
     msg << " arrived at dock " << city;
     if(passenger.ticket == HAS_TICKET)  msg << ", bought a ticket";
     msg << " and is traveling to city " << passenger.destination << "." << endl;
-    string s = msg.str();
-    logger.write(s);
+    logger->write(msg);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
 }
@@ -45,8 +43,7 @@ void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTic
     msg << "Tourist " << touristId << " arrived walking to city " << city;
     if(destinationDock == city){
       msg << " which is his/her final destination." << endl;
-      string s = msg.str();
-      logger.write(s);
+      logger->write(msg);
       return;
     }
     msg << "and is traveling to city " << destinationDock << "." << endl;
@@ -56,8 +53,7 @@ void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTic
     passenger.id = touristId;
     passenger.ticket = hasTicket;
     passenger.tourist = IS_TOURIST;
-    string s = msg.str();
-    logger.write(s);
+    logger->write(msg);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
 }
@@ -71,7 +67,7 @@ Passenger Queue::getNextPassenger() {
     if(passenger.ticket == HAS_TICKET)  msg << ", has a ticket";
     msg << " and got onboard of a ship in city " << city << " traveling to city " << passenger.destination << "." << endl;
     string s = msg.str();
-    logger.write(s);
+    logger->write(s);
     this->semaforo_prod.v();
     return passenger;
 }
@@ -99,12 +95,10 @@ void Queue::flush(){
 void Queue::writePassenger(Passenger passenger) {
     this->buffer.escribir(passenger, this->posWrite);
     this->posWrite = (this->posWrite + 1) % QUEUE_SIZE;
-    //printf("passenger added at pos: %d\n", posWrite);
 }
 
 Passenger Queue::readPassenger() {
     Passenger passenger = this->buffer.leer(this->posRead);
     this->posRead = (this->posRead + 1) % QUEUE_SIZE;
-    //printf("readPassenger: %d, pos: %d\n", passenger.id, posRead);
     return passenger;
 }

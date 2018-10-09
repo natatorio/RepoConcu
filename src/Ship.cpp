@@ -2,12 +2,14 @@
 #include "SignalHandler.h"
 
 
+
 Ship::Ship(int shipCapacity){
   blockSignals();
   capacity = shipCapacity;
   srand(getpid());
   if(rand()%PRECISION < PRECISION * LEGAL_SHIP_PROBABILITY)  legalShip = true;
   else legalShip = false;
+  logger = new Logger("test");
 }
 
 void Ship::inspectShip(){
@@ -55,15 +57,16 @@ void Ship::downloadWalkingTourist(){
 
 char Ship::visitCity(int city){
   this->city = city;
-  Queue* boardingQueue;
-  if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
-  else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
   bool morePassengers;
   do{
     blockSignals();
     morePassengers = downloadPassenger(false);
     unblockSignals();
   }while(morePassengers);
+  if(direction == TRAVELING_BACKWARD && city == 0)  return state;
+  Queue* boardingQueue;
+  if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
+  else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
   blockSignals();
   while((int)passengers.size() < capacity && state != CONFISCATED){
     unblockSignals();
@@ -79,6 +82,9 @@ bool Ship::downloadPassenger(bool everyone){
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).destination == city || everyone){
       passengers.erase(it);
+      ostringstream msg;
+      msg << "Passenger " << (*it).id << " got off a ship in dock " << city << endl;
+      logger->write(msg);
       return true;
     }
   }
@@ -109,5 +115,6 @@ void Ship::unblockSignals(){
 }
 
 Ship::~Ship(){
+    delete logger;
     close(1);
 }
