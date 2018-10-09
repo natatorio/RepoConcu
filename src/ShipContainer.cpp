@@ -13,7 +13,7 @@ ShipContainer::ShipContainer(int capacity, int nCities){
   customHandler.addShip(ship);
   inspectionHandler.addShip(ship);
   touristHandler.addShip(ship);
-  for(int i = 0; i != nCities; i++) docks.push_back(new Dock(i));
+  for(int i = 0; i != nCities; i++) docks.push_back(new Dock(i, NOT_INITIALIZE));
 }
 
 void ShipContainer::startJourney(){

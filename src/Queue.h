@@ -10,7 +10,7 @@
 #define TOURIST_PROBABILITY 0.44
 #define BUY_TICKET_PROBABILITY 0.87
 #define PRECISION 100
-#define QUEUE_SIZE 10
+#define QUEUE_SIZE 3
 #define TRAVELING_FOWARD 1
 #define TRAVELING_BACKWARD -1
 
@@ -32,7 +32,7 @@ class Queue {
     static const char* newPassengerOrder;
     static const char* walkingTouristOrder;
 
-    Queue(const char* filename, int city);
+    Queue(const char* filename, int city, int init);
     void enqueueNewPassenger(int id);
     void enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket);
     Passenger getNextPassenger();

@@ -56,8 +56,8 @@ void Ship::downloadWalkingTourist(){
 char Ship::visitCity(int city){
   this->city = city;
   Queue* boardingQueue;
-  if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city);
-  else  boardingQueue = new Queue(Queue::backQueueFilename, city);
+  if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
+  else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
   bool morePassengers;
   do{
     blockSignals();

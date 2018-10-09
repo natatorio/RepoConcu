@@ -9,12 +9,12 @@ Logger::~Logger() {
 
 Logger::Logger(string& filename) {
   //this->fd = open(filename.c_str(), O_CREAT | O_RDWR | O_TRUNC);
-  this->file = fopen(filename.c_str(), "w");
+  this->file = fopen(filename.c_str(), "a");
   this->fd = fileno(this->file);
 }
 
 Logger::Logger(const char *filename) {
-  this->file = fopen(filename, "w");
+  this->file = fopen(filename, "a");
   this->fd = fileno(this->file);
 }
 
@@ -24,7 +24,7 @@ void Logger::set_lock() {
   fl.l_start = 0;
   fl.l_len = 0;
   fl.l_type = F_WRLCK;
-  fcntl(this->fd, F_SETLK, fl);
+  fcntl(this->fd, F_SETLKW, fl);
 }
 
 void Logger::free_lock() {
@@ -47,7 +47,7 @@ string Logger::format_logline(string& text) {
   strftime(buffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
 
   stringstream stringStream;
-  stringStream << "[" << buffer << "][" << getpid() << "] " << text << '\n';
+  stringStream << "[" << buffer << "][" << getpid() << "] " << text << endl;
   string buf = stringStream.str();
   return buf;
 }

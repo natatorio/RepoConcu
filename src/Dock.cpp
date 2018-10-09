@@ -1,11 +1,12 @@
 #include "Dock.h"
 
-Dock::Dock(int id){
-  semaphore = new Semaforo("bin/bash", 1, id);
+Dock::Dock(int id, int init){
+  semaphore = new Semaforo("bin/bash", 1, id, INITIALIZE);
+  dockMem.crear("bin/bash", id, 1);
 }
 
 Dock::~Dock() {
-  semaphore->eliminar();
+  if(dockMem.liberar() == LIBERADA)  semaphore->eliminar();
 }
 
 void Dock::lock() {
