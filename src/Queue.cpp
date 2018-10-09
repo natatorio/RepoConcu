@@ -24,7 +24,6 @@ Queue::~Queue(){
 };
 
 void Queue::enqueueNewPassenger(int id) {
-    cout << "Se pueden encolar " << semaforo_prod.getCont() << endl;
     this->semaforo_prod.p();
     Passenger passenger = this->createNewPassenger(id);
     //printf("Passenger %d", passenger.id);

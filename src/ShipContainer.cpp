@@ -20,12 +20,10 @@ void ShipContainer::startJourney(){
   for(int i = 0; i > -1; i += direction){
     docks[i]->lock();
     ignorePendingSignals();
-    //char shipState = ship->visitCity(i);
-    sleep(1);
-    char shipState = 0;
+    if(i == nCities - 1)  changeDirection();
+    char shipState = ship->visitCity(i);
     docks[i]->unlock();
     if(shipState == Ship::CONFISCATED)  break;
-    if(i == nCities - 1)  changeDirection();
   }
 }
 

@@ -1,6 +1,8 @@
 #include "Ship.h"
 #include "SignalHandler.h"
 
+Logger logger("test");
+
 
 Ship::Ship(int shipCapacity){
   blockSignals();
@@ -54,16 +56,21 @@ void Ship::downloadWalkingTourist(){
 }
 
 char Ship::visitCity(int city){
+  ostringstream msg;
+  msg << "A ship arrived to dock " << city << endl;
+  string s = msg.str();
+  logger.write(s);
   this->city = city;
-  Queue* boardingQueue;
-  if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
-  else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
   bool morePassengers;
   do{
     blockSignals();
     morePassengers = downloadPassenger(false);
     unblockSignals();
   }while(morePassengers);
+  if(direction == TRAVELING_BACKWARD && city == 0)  return state;
+  Queue* boardingQueue;
+  if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
+  else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
   blockSignals();
   while((int)passengers.size() < capacity && state != CONFISCATED){
     unblockSignals();

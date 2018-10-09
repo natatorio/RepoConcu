@@ -2,7 +2,7 @@
 #define QUEUE_H_
 
 #define MAX_ARG_SIZE 50
-#define N_CITIES 5
+#define N_CITIES 3
 #define IS_TOURIST 1
 #define ISNT_TOURIST 0
 #define HAS_TICKET 1
