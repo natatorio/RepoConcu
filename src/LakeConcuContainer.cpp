@@ -23,7 +23,6 @@ void LakeConcuContainer::listenShips(){
 }
 
 LakeConcuContainer::~LakeConcuContainer(){
-  lakeConcu->stopGeneratorAndSignalSenders();
 	SignalHandler :: destruir ();
   delete lakeConcu;
 }

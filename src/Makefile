@@ -1,6 +1,6 @@
 CPP = g++
 CPPFLAGS = -std=gnu++11 -Wall
-LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o
+LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o Logger.o
 SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o Dock.o $(QUEUE)
 GENERATOR = Generator.o SignalHandler.o $(QUEUE)
 QUEUER = Queuer.o $(QUEUE)
@@ -72,3 +72,4 @@ buildSignalSender: $(SIGNALSENDER)
 
 clean:
 	rm -f *.o $(execLakeConcu) $(execShip) $(execGenerator) $(execSignalSender) $(execQueuer)
+	rm test

@@ -12,6 +12,7 @@
 #include "Pipe.h"
 #include "Ship.h"
 
+#include <vector>
 #include <sys/wait.h>
 
 class LakeConcu{
@@ -23,10 +24,9 @@ class LakeConcu{
     ~LakeConcu();
     void listenShips();
     void printFinedAndConfiscated();
-    void stopGeneratorAndSignalSenders();
 
   private:
-    char (*pidShips)[MAX_ARG_SIZE];
+    vector <pid_t> pidShips;
     pid_t generatorPid;
     pid_t customPid;
     pid_t inspectorPid;
@@ -42,6 +42,7 @@ class LakeConcu{
     void runTouristDownloader();
     int getConfiscatedShips();
     int getFinedPassengers();
+    void stopGeneratorAndSignalSenders();
 };
 
 #endif /* LAKECONCU_H_ */
