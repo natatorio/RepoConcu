@@ -2,10 +2,11 @@
 #define DOCK_H_
 
 #include "Semaforo.h"
+#include "MemoriaCompartida.h"
 
 class Dock {
 public:
-  Dock(int id);
+  Dock(int id, int init);
   ~Dock();
 
   void lock();
@@ -13,6 +14,7 @@ public:
 
 private:
   Semaforo* semaphore;
+  MemoriaCompartida <int> dockMem;
 };
 
 #endif /* DOCK_H_ */

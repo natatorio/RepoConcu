@@ -5,8 +5,10 @@ Logger logger("test");
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
-  runShips(nShips, shipCapacity);
   runGenerator();
+  sleep(1); //TODO: add Sync between generator and ships
+  initDocks();
+  runShips(nShips, shipCapacity);
 //  runCustom();
 //  runInspector();
 //  runTouristDownloader();
@@ -81,6 +83,10 @@ void LakeConcu::listenShips(){
   }
 }
 
+void LakeConcu::initDocks(){
+  for(int i = 0; i != N_CITIES; i++)  docks.push_back(new Dock(i, INITIALIZE));
+}
+
 int LakeConcu::getConfiscatedShips(){
   return confiscatedShips;
 }
@@ -107,4 +113,5 @@ LakeConcu::~LakeConcu(){
   stopGeneratorAndSignalSenders();
   pipe->cerrar();
   delete pipe;
+  for(int i = 0; i != N_CITIES; i++)  delete docks[i];
 }

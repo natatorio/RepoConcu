@@ -10,6 +10,7 @@
 
 #include "Pipe.h"
 #include "Ship.h"
+#include "Dock.h"
 
 #include <vector>
 #include <sys/wait.h>
@@ -25,6 +26,7 @@ class LakeConcu{
     void printFinedAndConfiscated();
 
   private:
+    vector <Dock*> docks;
     vector <pid_t> pidShips;
     pid_t generatorPid;
     pid_t customPid;
@@ -34,6 +36,7 @@ class LakeConcu{
     int finedPassengers;
     Pipe* pipe;
 
+    void initDocks();
     void runShips(int nShips, int shipCapacity);
     void runGenerator();
     void runCustom();

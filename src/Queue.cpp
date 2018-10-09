@@ -7,7 +7,8 @@ const char* Queue::backQueueFilename = "backqueue.cc";
 const char* Queue::newPassengerOrder = "worker";
 const char* Queue::walkingTouristOrder = "tourist";
 
-Queue::Queue(const char *filename, int city) : semaforo_prod(filename, QUEUE_SIZE, 1+city), semaforo_cons(filename, 0, -1-city) {
+Queue::Queue(const char *filename, int city, int init)
+ : semaforo_prod(filename, QUEUE_SIZE, 1+city, init), semaforo_cons(filename, 0, -1-city, init) {
     this->buffer.crear(filename, city, QUEUE_SIZE);
     if(!strcmp(filename, goQueueFilename)) travelingWay = TRAVELING_FOWARD;
     else  travelingWay = TRAVELING_BACKWARD;
@@ -23,6 +24,7 @@ Queue::~Queue(){
 };
 
 void Queue::enqueueNewPassenger(int id) {
+    cout << "Se pueden encolar " << semaforo_prod.getCont() << endl;
     this->semaforo_prod.p();
     Passenger passenger = this->createNewPassenger(id);
     //printf("Passenger %d", passenger.id);
@@ -77,7 +79,9 @@ Passenger Queue::getNextPassenger() {
 Passenger Queue::createNewPassenger(int id) {
     Passenger passenger;
     passenger.id = id;
-    passenger.destination = city + travelingWay * (1 + rand() % (N_CITIES - 1 - city));
+    int posibleCities = city;
+    if(travelingWay == TRAVELING_FOWARD)  posibleCities = N_CITIES - 1 - city;
+    passenger.destination = city + travelingWay * (1 + rand() % posibleCities);
     if(rand() % PRECISION < PRECISION * TOURIST_PROBABILITY)  passenger.tourist = IS_TOURIST;
     else passenger.tourist = ISNT_TOURIST;
     if(rand() % PRECISION < PRECISION * BUY_TICKET_PROBABILITY) passenger.ticket = HAS_TICKET;
