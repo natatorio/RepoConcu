@@ -7,10 +7,10 @@
 #define ISNT_TOURIST 0
 #define HAS_TICKET 1
 #define HASNT_TICKET 0
-#define TOURIST_PROBABILITY 0.44
-#define BUY_TICKET_PROBABILITY 0.87
+#define TOURIST_PROBABILITY 0
+#define BUY_TICKET_PROBABILITY 0
 #define PRECISION 100
-#define QUEUE_SIZE 3
+#define QUEUE_SIZE 1
 #define TRAVELING_FOWARD 1
 #define TRAVELING_BACKWARD -1
 
@@ -49,6 +49,7 @@ class Queue {
     Passenger createNewPassenger(int id);
     char travelingWay;
     int city;
+    Logger* logger;
 
     void writePassenger(Passenger passenger);
 };

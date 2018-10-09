@@ -1,7 +1,6 @@
 #include "Ship.h"
 #include "SignalHandler.h"
 
-Logger logger("test");
 
 
 Ship::Ship(int shipCapacity){
@@ -10,6 +9,7 @@ Ship::Ship(int shipCapacity){
   srand(getpid());
   if(rand()%PRECISION < PRECISION * LEGAL_SHIP_PROBABILITY)  legalShip = true;
   else legalShip = false;
+  logger = new Logger("test");
 }
 
 void Ship::inspectShip(){
@@ -56,10 +56,6 @@ void Ship::downloadWalkingTourist(){
 }
 
 char Ship::visitCity(int city){
-  ostringstream msg;
-  msg << "A ship arrived to dock " << city << endl;
-  string s = msg.str();
-  logger.write(s);
   this->city = city;
   bool morePassengers;
   do{
@@ -86,6 +82,9 @@ bool Ship::downloadPassenger(bool everyone){
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).destination == city || everyone){
       passengers.erase(it);
+      ostringstream msg;
+      msg << "Passenger " << (*it).id << " got off a ship in dock " << city << endl;
+      logger->write(msg);
       return true;
     }
   }
@@ -116,5 +115,6 @@ void Ship::unblockSignals(){
 }
 
 Ship::~Ship(){
+    delete logger;
     close(1);
 }
