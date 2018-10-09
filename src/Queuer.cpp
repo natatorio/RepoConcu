@@ -1,7 +1,7 @@
 #include "Queuer.h"
 
 
-//argv[0] => filename to create Queue ("goQueue.cc"/"backQueue.cc")
+//argv[0] => filename to create Queue ("goqueue"/"backqueue")
 //argv[1] => dock id to create Queue
 /*argv[2] => establishes "what" needs to be enqueued:
                 - a random passenger

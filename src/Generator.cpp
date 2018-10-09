@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
   Generator* generator = new Generator(atoi(argv[0]));
-  generator->runEnqueueingProcedure();
+  //generator->runEnqueueingProcedure();
   delete generator;
   exit(0);
 }
@@ -67,4 +67,5 @@ void Generator::deleteQueues(){
 Generator::~Generator(){
   deleteQueues();
   while(wait(NULL) > 0){}
+  cout << "Termina generador" << endl;
 }

@@ -1,19 +1,18 @@
 #include "LakeConcu.h"
 
-//Logger logger("test");
+Logger logger("test");
 
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
   runShips(nShips, shipCapacity);
   runGenerator();
-  runCustom();
-  runInspector();
-  runTouristDownloader();
+//  runCustom();
+//  runInspector();
+//  runTouristDownloader();
 }
 
 void LakeConcu::runShips(int nShips, int shipCapacity){
-  pidShips = new char*[nShips + SIGNALSENDER_ARGS + 1];
   pid_t pid;
   pipe = new Pipe();
   for(int i=0; i!=nShips; i++){
@@ -21,42 +20,56 @@ void LakeConcu::runShips(int nShips, int shipCapacity){
     if(!pid){
       pipe->setearModo(pipe->ESCRITURA);
       dup2(pipe->getFdEscritura(), 1);
-      char* argv[SHIP_ARGS + 1];
+      char argv[SHIP_ARGS][MAX_ARG_SIZE];
       strcpy(argv[0], to_string(shipCapacity).c_str());
       strcpy(argv[1], to_string(N_CITIES).c_str());
-      argv[2] = NULL;
-      execv("ship", argv);
+      char* const args[] = {argv[0], argv[1], NULL};
+      execv("ship", args);
     }
-    strcpy(pidShips[i + SIGNALSENDER_ARGS], to_string(pid).c_str());
+    pidShips.push_back(pid);
   }
-  pidShips[nShips + SIGNALSENDER_ARGS] = NULL;
   pipe->setearModo(pipe->LECTURA);
 }
 
 void LakeConcu::runGenerator(){
-  char* argv[GENERATOR_ARGS + 1];
+  char argv[GENERATOR_ARGS + 1][MAX_ARG_SIZE];
   strcpy(argv[0], to_string(N_CITIES).c_str());
-  argv[1] = NULL;
+  char* const args[] = {argv[0], NULL};
   generatorPid = fork();
-  if(!generatorPid) execv("generator", argv);
+  if(!generatorPid) execv("generator", args);
 }
 
 void LakeConcu::runCustom(){
-  strcpy(pidShips[0], to_string(SIGRTMIN + CUSTOM_SIG).c_str());
-  strcpy(pidShips[1], to_string(CUSTOM_SLEEP_SECS).c_str());
-  if(!fork()) execv("signalSender", pidShips);
+  char argv[SIGNALSENDER_ARGS + pidShips.size() + 1][MAX_ARG_SIZE];
+  strcpy(argv[0], to_string(SIGRTMIN + CUSTOM_SIG).c_str());
+  strcpy(argv[1], to_string(CUSTOM_SLEEP_SECS).c_str());
+  for(unsigned int i = 0; i != pidShips.size(); i++) strcpy(argv[i + SIGNALSENDER_ARGS], to_string(pidShips[i]).c_str());
+  char* argv2[SIGNALSENDER_ARGS + pidShips.size() + 1];
+  for(unsigned int i = 0; i != pidShips.size() + SIGNALSENDER_ARGS; i++)  argv2[i] = argv[i];
+  argv2[pidShips.size() + SIGNALSENDER_ARGS] = NULL;
+  if(!fork()) execv("signalSender", argv2);
 }
 
 void LakeConcu::runInspector(){
-  strcpy(pidShips[0], to_string(SIGRTMIN + INSPECTION_SIG).c_str());
-  strcpy(pidShips[1], to_string(INSPECTOR_SLEEP_SECS).c_str());
-  if(!fork()) execv("signalSender", pidShips);
+  char argv[SIGNALSENDER_ARGS + pidShips.size() + 1][MAX_ARG_SIZE];
+  strcpy(argv[0], to_string(SIGRTMIN + INSPECTION_SIG).c_str());
+  strcpy(argv[1], to_string(INSPECTOR_SLEEP_SECS).c_str());
+  for(unsigned int i = 0; i != pidShips.size(); i++) strcpy(argv[i + SIGNALSENDER_ARGS], to_string(pidShips[i]).c_str());
+  char* argv2[SIGNALSENDER_ARGS + pidShips.size() + 1];
+  for(unsigned int i = 0; i != pidShips.size() + SIGNALSENDER_ARGS; i++)  argv2[i] = argv[i];
+  argv2[pidShips.size() + SIGNALSENDER_ARGS] = NULL;
+  if(!fork()) execv("signalSender", argv2);
 }
 
 void LakeConcu::runTouristDownloader(){
-  strcpy(pidShips[0], to_string(SIGRTMIN + TOURIST_SIG).c_str());
-  strcpy(pidShips[1], to_string(TOURISTDOWLOADER_SLEEP_SECS).c_str());
-  if(!fork()) execv("signalSender", pidShips);
+  char argv[SIGNALSENDER_ARGS + pidShips.size() + 1][MAX_ARG_SIZE];
+  strcpy(argv[0], to_string(SIGRTMIN + TOURIST_SIG).c_str());
+  strcpy(argv[1], to_string(TOURISTDOWLOADER_SLEEP_SECS).c_str());
+  for(unsigned int i = 0; i != pidShips.size(); i++) strcpy(argv[i + SIGNALSENDER_ARGS], to_string(pidShips[i]).c_str());
+  char* argv2[SIGNALSENDER_ARGS + pidShips.size() + 1];
+  for(unsigned int i = 0; i != pidShips.size() + SIGNALSENDER_ARGS; i++)  argv2[i] = argv[i];
+  argv2[pidShips.size() + SIGNALSENDER_ARGS] = NULL;
+  if(!fork()) execv("signalSender", argv2);
 }
 
 void LakeConcu::listenShips(){
@@ -78,10 +91,11 @@ int LakeConcu::getFinedPassengers(){
 
 void LakeConcu::stopGeneratorAndSignalSenders(){
   kill(generatorPid, SIGINT);
-  kill(customPid, SIGINT);
-  kill(inspectorPid, SIGINT);
-  kill(touristDownloaderPid, SIGINT);
-  for(int i = 0; i != 4; i++) wait(NULL);
+  wait(NULL);
+  //kill(customPid, SIGINT);
+  //kill(inspectorPid, SIGINT);
+  //kill(touristDownloaderPid, SIGINT);
+  //for(int i = 0; i != 4; i++) wait(NULL);
 }
 
 void LakeConcu::printFinedAndConfiscated(){
@@ -90,7 +104,7 @@ void LakeConcu::printFinedAndConfiscated(){
 }
 
 LakeConcu::~LakeConcu(){
-  delete pidShips;
+  stopGeneratorAndSignalSenders();
   pipe->cerrar();
   delete pipe;
 }
