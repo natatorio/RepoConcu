@@ -2,14 +2,14 @@
 
 
 Logger logger("test");
-const char* Queue::goQueueFilename = "goqueue";
-const char* Queue::backQueueFilename = "backqueue";
+const char* Queue::goQueueFilename = "goqueue.cc";
+const char* Queue::backQueueFilename = "backqueue.cc";
 const char* Queue::newPassengerOrder = "worker";
 const char* Queue::walkingTouristOrder = "tourist";
 
-Queue::Queue(const char *filename, int city) : semaforo_prod(filename, QUEUE_SIZE, city), semaforo_cons(filename, 0, city) {
+Queue::Queue(const char *filename, int city) : semaforo_prod(filename, QUEUE_SIZE, 1+city), semaforo_cons(filename, 0, -1-city) {
     this->buffer.crear(filename, city, QUEUE_SIZE);
-    if(filename == goQueueFilename) travelingWay = TRAVELING_FOWARD;
+    if(!strcmp(filename, goQueueFilename)) travelingWay = TRAVELING_FOWARD;
     else  travelingWay = TRAVELING_BACKWARD;
     srand(getpid());
     this->city = city;
@@ -20,7 +20,6 @@ Queue::~Queue(){
       this->semaforo_prod.eliminar();
       this->semaforo_cons.eliminar();
     }
-
 };
 
 void Queue::enqueueNewPassenger(int id) {
@@ -29,10 +28,10 @@ void Queue::enqueueNewPassenger(int id) {
     //printf("Passenger %d", passenger.id);
     ostringstream msg;
     msg << "Passenger " << passenger.id;
-    if(passenger.tourist == IS_TOURIST) msg << " is a tourist, ";
+    if(passenger.tourist == IS_TOURIST) msg << " is a tourist,";
     msg << " arrived at dock " << city;
-    if(passenger.ticket == HAS_TICKET)  msg << ", bought a ticket ";
-    msg << "and is traveling to city " << passenger.destination << "." << endl;
+    if(passenger.ticket == HAS_TICKET)  msg << ", bought a ticket";
+    msg << " and is traveling to city " << passenger.destination << "." << endl;
     string s = msg.str();
     logger.write(s);
     this->writePassenger(passenger);

@@ -36,12 +36,6 @@ void Logger::free_lock() {
   fcntl(this->fd, F_SETLK, fl);
 }
 
-char* getLocalTime() {
-  //auto t = chrono::system_clock::to_time_t(chrono::system_clock::now());
-  //TODO
-  return NULL;
-}
-
 string Logger::format_logline(string& text) {
   time_t rawtime;
   tm* timeinfo;
@@ -51,7 +45,6 @@ string Logger::format_logline(string& text) {
   timeinfo = localtime(&rawtime);
 
   strftime(buffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
-  puts(buffer);
 
   stringstream stringStream;
   stringStream << "[" << buffer << "][" << getpid() << "] " << text << '\n';
