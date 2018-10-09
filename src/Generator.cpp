@@ -1,7 +1,9 @@
 #include "Generator.h"
 
+#define PRUEBA 1
+
 int main(int argc, char* argv[]){
-  Generator* generator = new Generator(atoi(argv[0]));
+  Generator* generator = new Generator(atoi(argv[0+PRUEBA]));
   //generator->runEnqueueingProcedure();
   delete generator;
   exit(0);
@@ -14,23 +16,28 @@ Generator::Generator(int nCities){
 }
 
 void Generator::createQueues(){
-  for(int i=0; i != nCities; i++){
+  goQueues.push_back(new Queue(Queue::goQueueFilename, 0));
+  runQueuer(Queue::goQueueFilename, 0);
+  for(int i = 1; i != nCities - 1; i++){
     goQueues.push_back(new Queue(Queue::goQueueFilename, i));
     backQueues.push_back(new Queue(Queue::backQueueFilename, i));
     runQueuer(Queue::goQueueFilename, i);
     runQueuer(Queue::backQueueFilename, i);
   }
+  backQueues.push_back(new Queue(Queue::backQueueFilename, nCities - 1));
+  runQueuer(Queue::backQueueFilename, nCities - 1);
+
 }
 
 void Generator::runQueuer(const char* queueType, int dock){
   if(!fork()){
-    char* argv[QUEUER_ARGS + 1];
+    char argv[QUEUER_ARGS + 1][MAX_ARG_SIZE];
     strcpy(argv[0], queueType);
     strcpy(argv[1], to_string(dock).c_str());
     strcpy(argv[2], Queue::newPassengerOrder);
     strcpy(argv[3], to_string(actualId++).c_str());
-    argv[4] = NULL;
-    execv("queuer", argv);
+    char* const args[] = {argv[0], argv[1], argv[2], argv[3], NULL};
+    execv("queuer", args);
   }
 }
 

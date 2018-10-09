@@ -1,7 +1,7 @@
 #include "Queuer.h"
 
 
-//argv[0] => filename to create Queue ("goqueue"/"backqueue")
+//argv[0] => filename to create Queue ("goqueue.cc"/"backqueue.cc")
 //argv[1] => dock id to create Queue
 /*argv[2] => establishes "what" needs to be enqueued:
                 - a random passenger
@@ -19,6 +19,7 @@ int main(int argc, char* argv[]){
     sleep(1 + rand() % MAX_WALKING_SECS);
     queue->enqueueWalkingTourist(atoi(argv[3]),atoi(argv[4]),atoi(argv[5]));;
   }
+  cout << "Soy queuer." << endl;
   delete queue;
   exit(encapsulateEnqueuedInfo(argv[0], (unsigned int)atoi(argv[1])));
 }
