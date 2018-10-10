@@ -1,7 +1,7 @@
 #ifndef LAKECONCU_H_
 #define LAKECONCU_H_
 
-#define SHIP_ARGS 2
+#define SHIP_ARGS 3
 #define GENERATOR_ARGS 1
 #define SIGNALSENDER_ARGS 2
 #define CUSTOM_SLEEP_SECS 3

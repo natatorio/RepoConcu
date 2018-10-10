@@ -3,8 +3,9 @@
 
 
 
-Ship::Ship(int shipCapacity){
+Ship::Ship(int shipCapacity, int id){
   blockSignals();
+  this->id = id;
   capacity = shipCapacity;
   srand(getpid());
   if(rand()%PRECISION < PRECISION * LEGAL_SHIP_PROBABILITY)  legalShip = true;
@@ -16,6 +17,9 @@ void Ship::inspectShip(){
   blockSignals();
   state = CONFISCATED;
   cout << CONFISCATED << flush;
+  ostringstream msg;
+  msg << "Ship " << id << " was confiscated in dock " << city << endl;
+  logger->write(msg);
 }
 
 void Ship::inspectTickets(){

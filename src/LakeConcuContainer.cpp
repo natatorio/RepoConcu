@@ -5,7 +5,8 @@ int main (int argc, char* argv[]){
     cout << "Usage: ./lakeConcu {N Ships} {Capacity of ships}" << endl;
     return 0;
   }
-  cout << ". Para consultar la cantidad de pasajeros multados ejecute: kill -47 " << getpid() << endl;
+  cout << ". Para consultar la cantidad de pasajeros multados ejecute: kill -";
+  cout << SIGRTMIN + InfoHandler::INFO_SIG << " " << getpid() << endl;
   LakeConcuContainer* lakeConcuContainer = new LakeConcuContainer(atoi(argv[1]), atoi(argv[2]));
   lakeConcuContainer->listenShips();
   delete lakeConcuContainer;

@@ -19,7 +19,7 @@ class Ship{
     static const char FINED = 'F';
     static const char CONFISCATED = 'C';
 
-    Ship(int shipCapacity);
+    Ship(int shipCapacity, int id);
     void blockSignals();
     void unblockSignals();
     void inspectTickets();
@@ -34,6 +34,7 @@ class Ship{
     int capacity;
     int direction = TRAVELING_FOWARD;
     int city;
+    int id;
     list<Passenger> passengers;
     bool legalShip;
     char state = 0;

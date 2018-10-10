@@ -1,16 +1,17 @@
 #include "ShipContainer.h"
 
 int main(int argc, char* argv[]){
-  ShipContainer* shipContainer = new ShipContainer(atoi(argv[0]), atoi(argv[1]));
+  ShipContainer* shipContainer = new ShipContainer(atoi(argv[0]), atoi(argv[1]), atoi(argv[2]));
   shipContainer->startJourney();
   delete shipContainer;
   exit(0);
 }
 
-ShipContainer::ShipContainer(int capacity, int nCities){
+ShipContainer::ShipContainer(int capacity, int nCities, int id){
   this->nCities = nCities;
+  this->id = id;
   logger = new Logger("test");
-  ship = new Ship(capacity);
+  ship = new Ship(capacity, id);
   customHandler.addShip(ship);
   inspectionHandler.addShip(ship);
   touristHandler.addShip(ship);
@@ -21,14 +22,14 @@ void ShipContainer::startJourney(){
   for(int i = 0; i > -1; i += direction){
     docks[i]->lock();
     ostringstream msg;
-    msg << "A ship arrived to dock " << i << endl;
+    msg << "Ship " << id << " arrived to dock " << i << endl;
     logger->write(msg);
     ignorePendingSignals();
     if(i == nCities - 1)  changeDirection();
     char shipState = ship->visitCity(i);
     docks[i]->unlock();
     msg.str("");
-    msg << "A ship left dock " << i << endl;
+    msg << "Ship " << id << " arrived to dock " << i << endl;
     logger->write(msg);
     if(shipState == Ship::CONFISCATED)  break;
   }

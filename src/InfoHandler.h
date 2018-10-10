@@ -10,7 +10,7 @@ class InfoHandler : public EventHandler {
 
 	public:
 
-		static const int INFO_SIG = 13;
+		static const int INFO_SIG = 12;
 
 		InfoHandler () {
 		}

@@ -9,7 +9,7 @@ LakeConcu::LakeConcu(int nShips, int shipCapacity){
   sleep(1); //TODO: add Sync between generator and ships
   initDocks();
   runShips(nShips, shipCapacity);
-//  runCustom();
+  runCustom();
 //  runInspector();
 //  runTouristDownloader();
 }
@@ -25,7 +25,8 @@ void LakeConcu::runShips(int nShips, int shipCapacity){
       char argv[SHIP_ARGS][MAX_ARG_SIZE];
       strcpy(argv[0], to_string(shipCapacity).c_str());
       strcpy(argv[1], to_string(N_CITIES).c_str());
-      char* const args[] = {argv[0], argv[1], NULL};
+      strcpy(argv[2], to_string(pidShips.size()).c_str());
+      char* const args[] = {argv[0], argv[1], argv[2], NULL};
       execv("ship", args);
     }
     pidShips.push_back(pid);
@@ -97,11 +98,10 @@ int LakeConcu::getFinedPassengers(){
 
 void LakeConcu::stopGeneratorAndSignalSenders(){
   kill(generatorPid, SIGINT);
-  wait(NULL);
   //kill(customPid, SIGINT);
   //kill(inspectorPid, SIGINT);
   //kill(touristDownloaderPid, SIGINT);
-  //for(int i = 0; i != 4; i++) wait(NULL);
+  for(int i = 0; i != 1; i++) wait(NULL);
 }
 
 void LakeConcu::printFinedAndConfiscated(){
@@ -110,6 +110,7 @@ void LakeConcu::printFinedAndConfiscated(){
 }
 
 LakeConcu::~LakeConcu(){
+  printFinedAndConfiscated();
   stopGeneratorAndSignalSenders();
   pipe->cerrar();
   delete pipe;
