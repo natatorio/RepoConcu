@@ -15,7 +15,8 @@ execSignalSender = signalSender
 
 .PHONY: all *.o
 
-all: buildLakeConcu buildShip buildSignalSender buildGenerator buildQueuer
+all:	buildLakeConcu buildShip buildSignalSender buildGenerator buildQueuer
+	rm test
 
 LakeConcuContainer.o: LakeConcuContainer.cpp LakeConcuContainer.h
 	$(CPP) $(CPPFLAGS) -c LakeConcuContainer.cpp
@@ -73,4 +74,3 @@ buildSignalSender: $(SIGNALSENDER)
 
 clean:
 	rm -f *.o $(execLakeConcu) $(execShip) $(execGenerator) $(execSignalSender) $(execQueuer)
-	rm test

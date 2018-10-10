@@ -1,6 +1,5 @@
 #include "Queuer.h"
 
-
 //argv[0] => filename to create Queue ("goqueue.cc"/"backqueue.cc")
 //argv[1] => dock id to create Queue
 /*argv[2] => establishes "what" needs to be enqueued:
@@ -16,7 +15,7 @@ int main(int argc, char* argv[]){
   if(!strcmp(argv[2], Queue::newPassengerOrder)) queue->enqueueNewPassenger(atoi(argv[3]));
   else if(!strcmp(argv[2], Queue::walkingTouristOrder)){
     srand(getpid());
-    sleep(1 + rand() % MAX_WALKING_SECS);
+    sleep(1 + rand() % MAX_WALKING_DELAY);
     queue->enqueueWalkingTourist(atoi(argv[3]),atoi(argv[4]),atoi(argv[5]));;
   }
   delete queue;

@@ -1,14 +1,9 @@
 #ifndef SHIP_H_
 #define SHIP_H_
 
-#define CUSTOM_SIG 13
-#define INSPECTION_SIG 14
-#define TOURIST_SIG 15
-#define LEGAL_SHIP_PROBABILITY 0.78
-#define QUEUER_ARGS 6
-
 #include "Queue.h"
 
+#include <sys/wait.h>
 #include <signal.h>
 #include <iostream>
 #include <list>
@@ -27,6 +22,7 @@ class Ship{
     void downloadWalkingTourist();
     char visitCity(int city);
     void changeDirection();
+    void setCity(int city);
     ~Ship();
 
   private:
@@ -40,6 +36,15 @@ class Ship{
     char state = 0;
     Logger* logger;
 
+    void logShipInspection();
+    void logTicketInspection();
+    void logMooring();
+    void logUnmooring();
+    void logConfiscated();
+    void logTouristWalk(Passenger);
+    void logFined(Passenger);
+    void logBoarding(Passenger);
+    void logUnboarding(Passenger passenger);
     bool downloadPassenger(bool everyone);
 };
 

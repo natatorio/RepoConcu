@@ -1,19 +1,7 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#define MAX_ARG_SIZE 50
-#define N_CITIES 3
-#define IS_TOURIST 1
-#define ISNT_TOURIST 0
-#define HAS_TICKET 1
-#define HASNT_TICKET 0
-#define TOURIST_PROBABILITY 0
-#define BUY_TICKET_PROBABILITY 0
-#define PRECISION 100
-#define QUEUE_SIZE 1
-#define TRAVELING_FOWARD 1
-#define TRAVELING_BACKWARD -1
-
+#include "Constants.h"
 #include "Logger.h"
 #include "Semaforo.h"
 #include "MemoriaCompartida.h"
@@ -52,6 +40,8 @@ class Queue {
     Logger* logger;
 
     void writePassenger(Passenger passenger);
+    void logRegularArrival(Passenger passenger);
+    void logWalkingTouristArrival(Passenger passenger);
 };
 
 

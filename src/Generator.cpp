@@ -28,7 +28,7 @@ void Generator::createQueues(){
 
 void Generator::runQueuer(const char* queueType, int dock){
   if(!fork()){
-    char argv[QUEUER_ARGS + 1][MAX_ARG_SIZE];
+    char argv[QUEUER_ARGS][MAX_ARG_SIZE];
     strcpy(argv[0], queueType);
     strcpy(argv[1], to_string(dock).c_str());
     strcpy(argv[2], Queue::newPassengerOrder);
@@ -72,5 +72,4 @@ void Generator::deleteQueues(){
 Generator::~Generator(){
   deleteQueues();
   while(wait(NULL) > 0){}
-  cout << "Termina generador" << endl;
 }

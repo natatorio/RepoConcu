@@ -21,16 +21,11 @@ ShipContainer::ShipContainer(int capacity, int nCities, int id){
 void ShipContainer::startJourney(){
   for(int i = 0; i > -1; i += direction){
     docks[i]->lock();
-    ostringstream msg;
-    msg << "Ship " << id << " arrived to dock " << i << endl;
-    logger->write(msg);
     ignorePendingSignals();
     if(i == nCities - 1)  changeDirection();
+    ship->setCity(i);
     char shipState = ship->visitCity(i);
     docks[i]->unlock();
-    msg.str("");
-    msg << "Ship " << id << " arrived to dock " << i << endl;
-    logger->write(msg);
     if(shipState == Ship::CONFISCATED)  break;
   }
 }
@@ -46,7 +41,8 @@ void ShipContainer::ignorePendingSignals(){
 
 void ShipContainer::changeDirection(){
   ship->changeDirection();
-  direction = TRAVELING_BACKWARD;
+  if(direction == TRAVELING_FOWARD) direction = TRAVELING_BACKWARD;
+  else direction = TRAVELING_FOWARD;
 }
 
 ShipContainer::~ShipContainer(){
