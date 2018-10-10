@@ -19,6 +19,7 @@ class Generator{
 
   private:
     void runQueuer(const char* queueType, int dock);
+    void createQueues();
     void deleteQueues();
     int isGoingQueue(int enqueuedInfo);
     int getDockId(int enqueuedInfo);

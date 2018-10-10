@@ -5,7 +5,6 @@ Logger logger("test");
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
-
   initDocks();
   initQueues();
   runGenerator();
