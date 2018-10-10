@@ -6,7 +6,7 @@ LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
   runGenerator();
-  sleep(1); //TODO: add Sync between generator and ships
+  sleep(3); //TODO: add Sync between generator and ships
   initDocks();
   runShips(nShips, shipCapacity);
   runCustom();
