@@ -12,7 +12,7 @@
 class ShipContainer{
   public:
     Ship* ship;
-    ShipContainer(int capacity, int nCities);
+    ShipContainer(int capacity, int nCities, int id);
     void startJourney();
     ~ShipContainer();
 
@@ -20,6 +20,7 @@ class ShipContainer{
     CustomHandler customHandler;
     InspectionHandler inspectionHandler;
     TouristHandler touristHandler;
+    int id;
     int nCities;
     int direction = TRAVELING_FOWARD;
     vector <Dock*> docks;
