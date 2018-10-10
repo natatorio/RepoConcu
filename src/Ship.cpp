@@ -8,25 +8,30 @@ Ship::Ship(int shipCapacity, int id){
   this->id = id;
   capacity = shipCapacity;
   srand(getpid());
-  if(rand()%PRECISION < PRECISION * LEGAL_SHIP_PROBABILITY)  legalShip = true;
+  if(rand()%PRECISION <= PRECISION * LEGAL_SHIP_PROBABILITY)  legalShip = true;
   else legalShip = false;
   logger = new Logger("test");
 }
 
 void Ship::inspectShip(){
   blockSignals();
-  state = CONFISCATED;
-  cout << CONFISCATED << flush;
-  ostringstream msg;
-  msg << "Ship " << id << " was confiscated in dock " << city << endl;
-  logger->write(msg);
+  logShipInspection();
+  if(!legalShip){
+    state = CONFISCATED;
+    cout << CONFISCATED << flush;
+    logConfiscated();
+  }else unblockSignals();
 }
 
 void Ship::inspectTickets(){
   blockSignals();
+  logTicketInspection();
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).ticket != HAS_TICKET){
-      it-- = passengers.erase(it);
+      sleep(GETING_OFF_DELAY);
+      logFined(*it);
+      it = passengers.erase(it);
+      if(it != passengers.end())  it--;
       cout << FINED << flush;
     }
   }
@@ -37,20 +42,24 @@ void Ship::downloadWalkingTourist(){
   blockSignals();
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).tourist == IS_TOURIST && (*it).destination != city){
-      int touristId = (*it).id;
-      int touristTicket = (*it).ticket;
-      int touristDestination = (*it).destination;
+      sleep(GETING_OFF_DELAY);
+      logTouristWalk(*it);
       if(!fork()){
-        char* argv[QUEUER_ARGS + 1];
-        if(direction == TRAVELING_FOWARD) strcpy(argv[0], Queue::goQueueFilename);
-        else  strcpy(argv[0], Queue::backQueueFilename);
+        char argv[QUEUER_ARGS][MAX_ARG_SIZE];
+        if(direction == TRAVELING_FOWARD){
+          if((*it).destination == N_CITIES - 1) strcpy(argv[0], Queue::backQueueFilename);
+          else  strcpy(argv[0], Queue::goQueueFilename);
+        }else{
+          if((*it).destination == 0)  strcpy(argv[0], Queue::goQueueFilename);
+          else  strcpy(argv[0], Queue::backQueueFilename);
+        }
         strcpy(argv[1], to_string(city + direction).c_str());
         strcpy(argv[2], Queue::walkingTouristOrder);
-        strcpy(argv[3], to_string(touristId).c_str());
-        strcpy(argv[4], to_string(touristTicket).c_str());
-        strcpy(argv[5], to_string(touristDestination).c_str());
-        argv[6] = NULL;
-        execv("queuer", argv);
+        strcpy(argv[3], to_string((*it).id).c_str());
+        strcpy(argv[4], to_string((*it).destination).c_str());
+        strcpy(argv[5], to_string((*it).ticket).c_str());
+        char* const args[] = {argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], NULL};
+        execv("queuer", args);
       }
       passengers.erase(it);
       break;
@@ -60,25 +69,32 @@ void Ship::downloadWalkingTourist(){
 }
 
 char Ship::visitCity(int city){
-  this->city = city;
+  blockSignals();
+  sleep(MOORING_DELAY);
+  logMooring();
   bool morePassengers;
   do{
-    blockSignals();
     morePassengers = downloadPassenger(false);
     unblockSignals();
+    blockSignals();
   }while(morePassengers);
-  if(direction == TRAVELING_BACKWARD && city == 0)  return state;
+  if(direction == TRAVELING_BACKWARD && city == 0){
+    logUnmooring();
+    return state;
+  }
   Queue* boardingQueue;
   if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
   else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
-  blockSignals();
   while((int)passengers.size() < capacity && state != CONFISCATED){
+    Passenger passenger = boardingQueue->getNextPassenger();
+    passengers.push_back(passenger);
+    logBoarding(passenger);
     unblockSignals();
-    passengers.push_back(boardingQueue->getNextPassenger());
     blockSignals();
   }
   delete boardingQueue;
   if(state == CONFISCATED)  while(downloadPassenger(true)){}
+  else logUnmooring();
   return state;
 }
 
@@ -86,9 +102,8 @@ bool Ship::downloadPassenger(bool everyone){
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).destination == city || everyone){
       passengers.erase(it);
-      ostringstream msg;
-      msg << "Passenger " << (*it).id << " got off a ship in dock " << city << endl;
-      logger->write(msg);
+      sleep(GETING_OFF_DELAY);
+      logUnboarding(*it);
       return true;
     }
   }
@@ -98,6 +113,10 @@ bool Ship::downloadPassenger(bool everyone){
 void Ship::changeDirection(){
   if(direction == TRAVELING_FOWARD) direction = TRAVELING_BACKWARD;
   else direction = TRAVELING_FOWARD;
+}
+
+void Ship::setCity(int city){
+  this->city = city;
 }
 
 void Ship::blockSignals(){
@@ -118,7 +137,65 @@ void Ship::unblockSignals(){
   sigprocmask ( SIG_UNBLOCK,&sa,NULL );
 }
 
+void Ship::logMooring(){
+  ostringstream msg;
+  msg << "Ship " << id << " arrived Dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logUnmooring(){
+  ostringstream msg;
+  msg << "Ship " << id << " left Dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logBoarding(Passenger passenger){
+  ostringstream msg;
+  msg << "Passenger " << passenger.id;
+  if(passenger.tourist == IS_TOURIST) msg << " is a tourist,";
+  if(passenger.ticket == HAS_TICKET)  msg << " has a ticket,";
+  msg << " got on Ship " << id << " in Dock " << city << " and is traveling to Dock " << passenger.destination << endl;
+  logger->write(msg);
+}
+
+void Ship::logUnboarding(Passenger passenger){
+  ostringstream msg;
+  msg << "Passenger " << passenger.id << " got off Ship " << id << " in Dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logFined(Passenger passenger){
+  ostringstream msg;
+  msg << "Passenger " << passenger.id << " was fined and taken off Ship " << id << " in Dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logTouristWalk(Passenger passenger){
+  ostringstream msg;
+  msg << "Passenger " << passenger.id << " (Tourist) got off Ship " << id << " for sightseeing in Dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logConfiscated(){
+  ostringstream msg;
+  msg << "Ship " << id << " was confiscated in dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logTicketInspection(){
+  ostringstream msg;
+  msg << "Inspector board Ship " << id << " in Dock " << city << endl;
+  logger->write(msg);
+}
+
+void Ship::logShipInspection(){
+  ostringstream msg;
+  msg << "Custom board Ship " << id << " in Dock " << city << endl;
+  logger->write(msg);
+}
+
 Ship::~Ship(){
-    delete logger;
-    close(1);
+  while(wait(NULL) > 0){}
+  delete logger;
+  close(1);
 }

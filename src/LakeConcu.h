@@ -1,13 +1,6 @@
 #ifndef LAKECONCU_H_
 #define LAKECONCU_H_
 
-#define SHIP_ARGS 3
-#define GENERATOR_ARGS 1
-#define SIGNALSENDER_ARGS 2
-#define CUSTOM_SLEEP_SECS 3
-#define INSPECTOR_SLEEP_SECS 2
-#define TOURISTDOWLOADER_SLEEP_SECS 1
-
 #include "Pipe.h"
 #include "Ship.h"
 #include "Dock.h"
