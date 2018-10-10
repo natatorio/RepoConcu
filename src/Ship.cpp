@@ -85,7 +85,6 @@ char Ship::visitCity(int city){
   Queue* boardingQueue;
   if(direction == TRAVELING_FOWARD) boardingQueue = new Queue(Queue::goQueueFilename, city, NOT_INITIALIZE);
   else  boardingQueue = new Queue(Queue::backQueueFilename, city, NOT_INITIALIZE);
-  cerr <<"llego 1" << endl;
   while((int)passengers.size() < capacity && state != CONFISCATED){
     Passenger passenger = boardingQueue->getNextPassenger();
     passengers.push_back(passenger);
@@ -198,7 +197,5 @@ void Ship::logShipInspection(){
 Ship::~Ship(){
   delete logger;
   close(1);
-  cerr << "Ship " << id << " reach destructor" << endl;
   while(wait(NULL) > 0){}
-  cerr << "Ship " << id << " ends" << endl;
 }

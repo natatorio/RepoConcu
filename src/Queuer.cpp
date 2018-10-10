@@ -11,6 +11,8 @@
 //argv[5] => 1 if walking tourist has ticket (only if argv[2] == 2)
 
 int main(int argc, char* argv[]){
+  SIGINT_Handler sigintHandler;
+  SignalHandler :: getInstance()->registrarHandler(SIGINT,&sigintHandler, 0);
   Queue* queue = new Queue((const char*)argv[0], atoi(argv[1]), NOT_INITIALIZE);
   if(!strcmp(argv[2], Queue::newPassengerOrder)) queue->enqueueNewPassenger(atoi(argv[3]));
   else if(!strcmp(argv[2], Queue::walkingTouristOrder)){

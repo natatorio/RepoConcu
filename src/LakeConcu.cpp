@@ -79,7 +79,7 @@ void LakeConcu::runTouristDownloader(){
 }
 
 void LakeConcu::listenShips(){
-  char msg;
+  char msg = 0;
   while(pipe->leer(&msg, sizeof(char))){
     if(msg == FINED) finedPassengers++;
     if(msg == CONFISCATED) confiscatedShips++;
@@ -99,14 +99,6 @@ int LakeConcu::getFinedPassengers(){
   return finedPassengers;
 }
 
-void LakeConcu::stopGeneratorAndSignalSenders(){
-  kill(generatorPid, SIGINT);
-  kill(customPid, SIGINT);
-  kill(inspectorPid, SIGINT);
-  kill(touristDownloaderPid, SIGINT);
-  while(wait(NULL) > 0);
-}
-
 void LakeConcu::printFinedAndConfiscated(){
   cout << "La cantidad de pasajeros multados es: " << getFinedPassengers() << endl;
   cout << "La cantidad de barcos decomisados es: " << getConfiscatedShips() << endl;
@@ -114,7 +106,8 @@ void LakeConcu::printFinedAndConfiscated(){
 
 LakeConcu::~LakeConcu(){
   printFinedAndConfiscated();
-  stopGeneratorAndSignalSenders();
+  kill(0, SIGINT);
+  while(wait(NULL) > 0);
   pipe->cerrar();
   delete pipe;
   for(int i = 0; i != N_CITIES; i++)  delete docks[i];
