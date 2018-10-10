@@ -27,7 +27,7 @@ Queue::~Queue(){
 void Queue::enqueueNewPassenger(int id) {
     this->semaforo_prod.p();
     Passenger passenger = this->createNewPassenger(id);
-    //logRegularArrival(passenger);
+    logRegularArrival(passenger);
     this->writePassenger(passenger);
     this->semaforo_cons.v();
 }
@@ -62,9 +62,9 @@ Passenger Queue::createNewPassenger(int id) {
     int posibleCities = city;
     if(travelingWay == TRAVELING_FOWARD)  posibleCities = N_CITIES - 1 - city;
     passenger.destination = city + travelingWay * (1 + rand() % posibleCities);
-    if(rand() % PRECISION <= PRECISION * TOURIST_PROBABILITY)  passenger.tourist = IS_TOURIST;
+    if(rand() % PRECISION < PRECISION * TOURIST_PROBABILITY)  passenger.tourist = IS_TOURIST;
     else passenger.tourist = ISNT_TOURIST;
-    if(rand() % PRECISION <= PRECISION * BUY_TICKET_PROBABILITY) passenger.ticket = HAS_TICKET;
+    if(rand() % PRECISION < PRECISION * BUY_TICKET_PROBABILITY) passenger.ticket = HAS_TICKET;
     else passenger.ticket = HASNT_TICKET;
     return passenger;
 }

@@ -47,10 +47,10 @@ void Ship::downloadWalkingTourist(){
       if(!fork()){
         char argv[QUEUER_ARGS][MAX_ARG_SIZE];
         if(direction == TRAVELING_FOWARD){
-          if((*it).destination == N_CITIES - 1) strcpy(argv[0], Queue::backQueueFilename);
+          if(city + direction == N_CITIES - 1) strcpy(argv[0], Queue::backQueueFilename);
           else  strcpy(argv[0], Queue::goQueueFilename);
         }else{
-          if((*it).destination == 0)  strcpy(argv[0], Queue::goQueueFilename);
+          if(city + direction == 0)  strcpy(argv[0], Queue::goQueueFilename);
           else  strcpy(argv[0], Queue::backQueueFilename);
         }
         strcpy(argv[1], to_string(city + direction).c_str());
@@ -195,7 +195,7 @@ void Ship::logShipInspection(){
 }
 
 Ship::~Ship(){
-  while(wait(NULL) > 0){}
   delete logger;
   close(1);
+  while(wait(NULL) > 0){}
 }
