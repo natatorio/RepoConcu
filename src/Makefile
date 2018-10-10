@@ -1,6 +1,6 @@
 CPP = g++
 CPPFLAGS = -std=gnu++11 -Wall
-LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o Logger.o $(DOCK)
+LAKECONCU = LakeConcuContainer.o LakeConcu.o Pipe.o SignalHandler.o Logger.o Queue.o $(DOCK)
 SHIP = ShipContainer.o Ship.o Pipe.o SignalHandler.o Dock.o $(QUEUE)
 GENERATOR = Generator.o SignalHandler.o $(QUEUE)
 QUEUER = Queuer.o SignalHandler.o $(QUEUE)
