@@ -5,10 +5,10 @@ Logger logger("test");
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
+
+  initDocks();
   initQueues();
   runGenerator();
-  sleep(3); //TODO: add Sync between generator and ships
-  initDocks();
   runShips(nShips, shipCapacity);
   runCustom();
   runInspector();
