@@ -14,15 +14,15 @@ Generator::Generator(int nCities){
 }
 
 void Generator::createQueues(){
-  goQueues.push_back(new Queue(Queue::goQueueFilename, 0, INITIALIZE));
+  goQueues.push_back(new Queue(Queue::goQueueFilename, 0, NOT_INITIALIZE));
   runQueuer(Queue::goQueueFilename, 0);
   for(int i = 1; i != nCities - 1; i++){
-    goQueues.push_back(new Queue(Queue::goQueueFilename, i, INITIALIZE));
-    backQueues.push_back(new Queue(Queue::backQueueFilename, i, INITIALIZE));
+    goQueues.push_back(new Queue(Queue::goQueueFilename, i, NOT_INITIALIZE));
+    backQueues.push_back(new Queue(Queue::backQueueFilename, i, NOT_INITIALIZE));
     runQueuer(Queue::goQueueFilename, i);
     runQueuer(Queue::backQueueFilename, i);
   }
-  backQueues.push_back(new Queue(Queue::backQueueFilename, nCities - 1, INITIALIZE));
+  backQueues.push_back(new Queue(Queue::backQueueFilename, nCities - 1, NOT_INITIALIZE));
   runQueuer(Queue::backQueueFilename, nCities - 1);
 }
 

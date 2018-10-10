@@ -5,6 +5,7 @@ Logger logger("test");
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
+  initQueues();
   runGenerator();
   sleep(3); //TODO: add Sync between generator and ships
   initDocks();
@@ -91,6 +92,15 @@ void LakeConcu::initDocks(){
   for(int i = 0; i != N_CITIES; i++)  docks.push_back(new Dock(i, INITIALIZE));
 }
 
+void LakeConcu::initQueues() {
+  goQueues.push_back(new Queue(Queue::goQueueFilename, 0, INITIALIZE));
+  for(int i = 1; i != N_CITIES - 1; i++){
+    goQueues.push_back(new Queue(Queue::goQueueFilename, i, INITIALIZE));
+    backQueues.push_back(new Queue(Queue::backQueueFilename, i, INITIALIZE));
+  }
+  backQueues.push_back(new Queue(Queue::backQueueFilename, N_CITIES - 1, INITIALIZE));
+}
+
 int LakeConcu::getConfiscatedShips(){
   return confiscatedShips;
 }
@@ -110,5 +120,9 @@ LakeConcu::~LakeConcu(){
   while(wait(NULL) > 0);
   pipe->cerrar();
   delete pipe;
-  for(int i = 0; i != N_CITIES; i++)  delete docks[i];
+  for(int i = 0; i != N_CITIES; i++) {
+    delete docks[i];
+    delete goQueues[i];
+    delete backQueues[i];
+  }
 }

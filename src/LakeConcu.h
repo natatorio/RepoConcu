@@ -28,8 +28,11 @@ class LakeConcu{
     int confiscatedShips;
     int finedPassengers;
     Pipe* pipe;
+    vector <Queue*> goQueues;
+    vector <Queue*> backQueues;
 
     void initDocks();
+    void initQueues();
     void runShips(int nShips, int shipCapacity);
     void runGenerator();
     void runCustom();
