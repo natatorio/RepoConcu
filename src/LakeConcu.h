@@ -30,6 +30,7 @@ class LakeConcu{
     Pipe* pipe;
 
     void initDocks();
+    void initQueues();
     void runShips(int nShips, int shipCapacity);
     void runGenerator();
     void runCustom();

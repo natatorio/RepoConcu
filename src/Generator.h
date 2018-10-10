@@ -18,7 +18,6 @@ class Generator{
     SIGINT_Handler sigintHandler;
 
   private:
-    void createQueues();
     void runQueuer(const char* queueType, int dock);
     void deleteQueues();
     int isGoingQueue(int enqueuedInfo);
