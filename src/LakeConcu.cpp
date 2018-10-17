@@ -118,11 +118,16 @@ LakeConcu::~LakeConcu(){
   printFinedAndConfiscated();
   kill(0, SIGINT);
   while(wait(NULL) > 0);
+  for(int i = 0; i != N_CITIES; i++) {
+    docks[i]->destroy();
+    delete docks[i];
+  }
   pipe->cerrar();
   delete pipe;
-  for(int i = 0; i != N_CITIES; i++) {
-    delete docks[i];
+  for(int i=0; i != N_CITIES - 1; i++){
+    goQueues[i]->flush();
     delete goQueues[i];
+    backQueues[i]->flush();
     delete backQueues[i];
   }
 }

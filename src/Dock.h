@@ -11,6 +11,7 @@ public:
 
   void lock();
   void unlock();
+  void destroy();
 
 private:
   Semaforo semaphore;

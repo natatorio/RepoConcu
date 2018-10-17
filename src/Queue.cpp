@@ -17,11 +17,7 @@ Queue::Queue(const char *filename, int city, int init)
 }
 
 Queue::~Queue(){
-    if(this->buffer.liberar() == LIBERADA){ // solo elimino la cola cuando soy el último proceso cerrando la cola
-      this->semaforo_prod.eliminar();
-      this->semaforo_cons.eliminar();
-      delete logger;
-    }
+        delete logger;
 };
 
 void Queue::enqueueNewPassenger(int id) {
@@ -74,6 +70,8 @@ void Queue::flush(){
     this->semaforo_cons.p();
     this->semaforo_prod.v();
   }
+  this->semaforo_prod.eliminar();
+  this->semaforo_cons.eliminar();
 }
 
 void Queue::writePassenger(Passenger passenger) {

@@ -5,7 +5,12 @@ Dock::Dock(int id, int init) : semaphore("dock.cc", 1, id, init){
 }
 
 Dock::~Dock() {
-  if(dockMem.liberar() == LIBERADA) semaphore.eliminar();
+  //if(dockMem.liberar() == LIBERADA)
+  dockMem.liberar();
+}
+
+void Dock::destroy(){
+  semaphore.eliminar();
 }
 
 void Dock::lock() {

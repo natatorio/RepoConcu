@@ -25,6 +25,7 @@ class Queue {
     void enqueueWalkingTourist(int touristId, int destinationDock, int hasTicket);
     Passenger getNextPassenger();
     void flush();
+    void destroy();
     ~Queue();
 
   private:
