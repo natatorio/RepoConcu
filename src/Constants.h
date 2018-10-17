@@ -27,8 +27,7 @@
 #define HASNT_TICKET 0
 #define TRAVELING_FOWARD 1
 #define TRAVELING_BACKWARD -1
-#define FORCE 1
-#define NOT_FORCE 0
+#define SHMMEM_KEY_OFFSET 100
 
 #define MAX_ARG_SIZE 50
 #define QUEUER_ARGS 6
