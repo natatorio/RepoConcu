@@ -16,12 +16,16 @@ Queue::Queue(const char *filename, int city, int init)
     this->logger = new Logger("test");
 }
 
+void Queue::destroy(){
+  int memState = NO_LIBERADA;
+  while(memState != LIBERADA) memState = this->buffer.liberar();
+  this->semaforo_prod.eliminar();
+  this->semaforo_cons.eliminar();
+  delete logger;
+}
+
 Queue::~Queue(){
-    if(this->buffer.liberar() == LIBERADA){ // solo elimino la cola cuando soy el último proceso cerrando la cola
-      this->semaforo_prod.eliminar();
-      this->semaforo_cons.eliminar();
-      delete logger;
-    }
+
 };
 
 void Queue::enqueueNewPassenger(int id) {

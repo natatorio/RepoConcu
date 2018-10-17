@@ -5,7 +5,6 @@ Logger logger("test");
 LakeConcu::LakeConcu(int nShips, int shipCapacity){
   confiscatedShips = 0;
   finedPassengers = 0;
-
   initDocks();
   initQueues();
   runGenerator();
@@ -114,15 +113,25 @@ void LakeConcu::printFinedAndConfiscated(){
   cout << "La cantidad de barcos decomisados es: " << getConfiscatedShips() << endl;
 }
 
+void LakeConcu::stopGeneratorAndSignalSenders(){
+  kill(customPid, SIGINT);
+  kill(inspectorPid, SIGINT);
+  kill(touristDownloaderPid, SIGINT);
+  kill(generatorPid, SIGINT);
+}
+
 LakeConcu::~LakeConcu(){
   printFinedAndConfiscated();
-  kill(0, SIGINT);
-  while(wait(NULL) > 0);
+  stopGeneratorAndSignalSenders();
   pipe->cerrar();
   delete pipe;
-  for(int i = 0; i != N_CITIES; i++) {
+  for(int i = 0; i != N_CITIES - 1; i++) {
     delete docks[i];
+    goQueues[i]->destroy();
     delete goQueues[i];
+    backQueues[i]->destroy();
     delete backQueues[i];
   }
+  delete docks[N_CITIES - 1];
+  while(wait(NULL) > 0);
 }
