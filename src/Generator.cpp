@@ -71,6 +71,5 @@ void Generator::deleteQueues(){
 
 Generator::~Generator(){
   deleteQueues();
-  kill(0, SIGINT);
   while(wait(NULL) > 0){}
 }
