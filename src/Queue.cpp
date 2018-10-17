@@ -55,7 +55,7 @@ void Queue::enqueueWalkingTourist(int touristId, int destinationDock, int hasTic
 Passenger Queue::getNextPassenger() {
     this->semaforo_cons.p();
     Passenger passenger = this->readPassenger();
-    sleep(GETING_ON_DELAY);
+    if(GETING_ON_DELAY) sleep(GETING_ON_DELAY);
     this->semaforo_prod.v();
     return passenger;
 }

@@ -27,10 +27,10 @@ pid_t SignalSender::getRandomShip(){
 }
 
 void SignalSender::startSending(){
-  sleep(sleepTime);
+  if(sleepTime) sleep(sleepTime);
   while ( sigintHandler.getGracefulQuit() == 0 ) {
     kill(getRandomShip(), signum);
-    sleep(sleepTime);
+    if(sleepTime) sleep(sleepTime);
   }
 }
 

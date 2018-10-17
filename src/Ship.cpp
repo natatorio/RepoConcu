@@ -28,7 +28,7 @@ void Ship::inspectTickets(){
   logTicketInspection();
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).ticket != HAS_TICKET){
-      sleep(GETING_OFF_DELAY);
+      if(GETING_OFF_DELAY) sleep(GETING_OFF_DELAY);
       logFined(*it);
       it = passengers.erase(it);
       if(it != passengers.end())  it--;
@@ -42,7 +42,7 @@ void Ship::downloadWalkingTourist(){
   blockSignals();
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).tourist == IS_TOURIST && (*it).destination != city){
-      sleep(GETING_OFF_DELAY);
+      if(GETING_OFF_DELAY) sleep(GETING_OFF_DELAY);
       logTouristWalk(*it);
       if(!fork()){
         char argv[QUEUER_ARGS][MAX_ARG_SIZE];
@@ -70,7 +70,7 @@ void Ship::downloadWalkingTourist(){
 
 char Ship::visitCity(int city){
   blockSignals();
-  sleep(MOORING_DELAY);
+  if(MOORING_DELAY) sleep(MOORING_DELAY);
   logMooring();
   bool morePassengers;
   do{
@@ -102,7 +102,7 @@ bool Ship::downloadPassenger(bool everyone){
   for(list<Passenger>::iterator it = passengers.begin(); it != passengers.end(); it++){
     if((*it).destination == city || everyone){
       passengers.erase(it);
-      sleep(GETING_OFF_DELAY);
+      if(GETING_OFF_DELAY) sleep(GETING_OFF_DELAY);
       logUnboarding(*it);
       return true;
     }
