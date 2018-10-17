@@ -34,6 +34,7 @@ class Queue {
     Semaforo semaforo_prod;
     Semaforo semaforo_cons;
     MemoriaCompartida<Passenger> buffer;
+    MemoriaCompartida<int> posiciones;
     Passenger readPassenger();
     Passenger createNewPassenger(int id);
     char travelingWay;

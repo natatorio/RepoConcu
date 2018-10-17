@@ -9,6 +9,7 @@ const char* Queue::walkingTouristOrder = "walkingTourist";
 Queue::Queue(const char *filename, int city, int init)
  : semaforo_prod(filename, PASSENGER_QUEUE_SIZE, 1+city, init), semaforo_cons(filename, 0, -1-city, init) {
     this->buffer.crear(filename, city, PASSENGER_QUEUE_SIZE);
+    this->posiciones.crear("Queue.h", 1, 2);
     if(!strcmp(filename, goQueueFilename)) travelingWay = TRAVELING_FOWARD;
     else  travelingWay = TRAVELING_BACKWARD;
     srand(getpid());
@@ -22,6 +23,7 @@ void Queue::destroy(){
   this->semaforo_prod.eliminar();
   this->semaforo_cons.eliminar();
   delete logger;
+  this->posiciones.liberar();
 }
 
 Queue::~Queue(){
@@ -81,13 +83,17 @@ void Queue::flush(){
 }
 
 void Queue::writePassenger(Passenger passenger) {
+    this->posWrite = this->posiciones.leer(0);
     this->buffer.escribir(passenger, this->posWrite);
     this->posWrite = (this->posWrite + 1) % PASSENGER_QUEUE_SIZE;
+    this->posiciones.escribir(this->posWrite, 0);
 }
 
 Passenger Queue::readPassenger() {
+    this->posRead = this->posiciones.leer(1);
     Passenger passenger = this->buffer.leer(this->posRead);
     this->posRead = (this->posRead + 1) % PASSENGER_QUEUE_SIZE;
+    this->posiciones.escribir(this->posRead, 1);
     return passenger;
 }
 
