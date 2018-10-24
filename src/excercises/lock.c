@@ -15,16 +15,16 @@ int main(){
 	lock.l_len = 0;
 	const int cero = 0;
 	int num = 0;
-	int fd = open("archivoLock.txt", O_CREAT | O_RDWR | O_TRUNC);
+	int fd = open("archivoLock.txt", O_RDWR | O_CREAT | O_TRUNC);
 	ssize_t writen_bytes = 0;
 	while(writen_bytes < sizeof(int)){
 	writen_bytes += write(fd, &cero + writen_bytes, sizeof(int) - writen_bytes);
 	}
-	pid_t pid = fork();
+	fork();
 	for(int i = 0; i!=10000; i++){
 		writen_bytes = 0;
 		lock.l_type = F_WRLCK;
-		fcntl(fd, F_SETLK, lock);
+		fcntl(fd, F_SETLKW, &lock);
 		lseek(fd ,0 , SEEK_SET);
 		while(writen_bytes < sizeof(int)){
 		writen_bytes += read(fd, &num + writen_bytes, sizeof(int) - writen_bytes);
@@ -36,16 +36,11 @@ int main(){
 		writen_bytes += write(fd, &num + writen_bytes, sizeof(int) - writen_bytes);
 		}
 		lock.l_type = F_UNLCK;
-		fcntl(fd, F_SETLK, lock);
-		if(i%2000 == 0){
-			if(!pid) printf("Soy el padre y escribí: %d\n", num);
-			else printf("Soy el hijo y escribí: %d\n", num);
-		}
+		fcntl(fd, F_SETLK, &lock);
 	}
 	close(fd);
-	if(!pid){
-		wait(NULL);
-		printf("El número final es: %d\n", num);
-	}
+	wait(NULL);
+	printf("%d\n",num);
+	unlink("archivoLock.txt");
 	return 0;
 }
